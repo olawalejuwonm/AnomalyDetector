@@ -1,7 +1,6 @@
 import cv2
 import mediapipe as mp
 import pyfirmata2
-import time
 import math
 
 board = pyfirmata2.Arduino("/dev/tty.usbmodem14201")
