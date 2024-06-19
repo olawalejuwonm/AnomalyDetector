@@ -1,6 +1,6 @@
 import cv2
 
-url = 'http://192.168.99.95/1024x768.mjpeg'
+url = 'http://192.168.41.95/1024x768.mjpeg'
 
 cap = cv2.VideoCapture(url)
 
