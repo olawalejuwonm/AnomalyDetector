@@ -1,8 +1,6 @@
 import cv2
 import os
-from imageai.Detection import ObjectDetection, VideoObjectDetection
-from PIL import Image
-import numpy as np
+from imageai.Detection import ObjectDetection
 
 camera = cv2.VideoCapture(0)
 execution_path = os.getcwd()
@@ -15,6 +13,8 @@ detector.loadModel()
 while True:
 
     ret, frame = camera.read()
+
+    
 
     # Check if the frame is not empty
     if ret:
@@ -29,12 +29,13 @@ while True:
             cv2.putText(frame, detection["name"], (detection["box_points"][0], detection["box_points"][1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         cv2.imshow("Frame", frame)
-        key = cv2.waitKey(1) & 0xFF
     else:
         print("Can't receive frame (stream end?). Exiting ...") 
-
-
+    key = cv2.waitKey(1)
     if key == ord("q"):
         break
+
+
+    
 camera.release()
 cv2.destroyAllWindows()
