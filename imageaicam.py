@@ -6,8 +6,10 @@ camera = cv2.VideoCapture(0)
 execution_path = os.getcwd()
 
 detector = ObjectDetection()
-detector.setModelTypeAsRetinaNet()
-detector.setModelPath(os.path.join(execution_path, "retinanet_resnet50_fpn_coco-eeacb38b.pth"))
+# detector.setModelTypeAsRetinaNet()
+# detector.setModelPath(os.path.join(execution_path, "retinanet_resnet50_fpn_coco-eeacb38b.pth"))
+detector.setModelTypeAsTinyYOLOv3()
+detector.setModelPath(os.path.join(execution_path, "tiny-yolov3.pt"))
 detector.loadModel()
 
 while True:
