@@ -3,8 +3,8 @@ import numpy as np
 import supervision as sv
 from ultralytics import YOLO
 import time
-import subprocess
-
+import logging
+logging.basicConfig(level=logging.ERROR)
 
 model = YOLO("yolov8n.pt")
 tracker = sv.ByteTrack()
@@ -12,30 +12,7 @@ box_annotator = sv.BoundingBoxAnnotator()
 label_annotator = sv.LabelAnnotator()
 trace_annotator = sv.TraceAnnotator()
 
-# Initialize recording state and start time
-is_recording = False
-start_time = 0
-record_duration = 20  # seconds
 
-# Define the codec and create VideoWriter object
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
-
-# Start ffmpeg subprocess for recording video
-ffmpeg_cmd = [
-    'ffmpeg',
-    '-y',  # Overwrite output file if it exists
-    '-f', 'rawvideo',  # Input format is raw video
-    '-vcodec', 'rawvideo',
-    '-pix_fmt', 'bgr24',  # Input pixel format
-    '-s', '640x480',  # Input size
-    '-r', '20',  # Frame rate
-    '-i', '-',  # Input comes from stdin
-    '-an',  # No audio
-    '-vcodec', 'mpeg4',  # Output codec
-    'output.avi'  # Output file
-]
-ffmpeg_process = None  # Will hold the subprocess
 
 def callback(frame: np.ndarray, _: int) -> np.ndarray:
     results = model(frame)[0]
@@ -56,6 +33,16 @@ def callback(frame: np.ndarray, _: int) -> np.ndarray:
         annotated_frame, detections=detections)
 
 camera = cv2.VideoCapture(0)  # 0 is usually the default camera
+# Initialize recording state and start time
+is_recording = False
+start_time = 0
+record_duration = 20  # seconds
+
+# Define the codec and create VideoWriter object
+fourcc = cv2.VideoWriter_fourcc(*'MP4V')
+print(camera.get(3), camera.get(4))
+out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (int(camera.get(3)), int(camera.get(4))))
+
 
 while True:
     ret, frame = camera.read()
@@ -64,34 +51,21 @@ while True:
         break
 
     processed_frame = callback(frame, 0)
+    print(is_recording, "is recording")
 
     # Check if objects were detected
-    # if len(sv.Detections.from_ultralytics(model(frame)[0])) > 0:
-    #     if not is_recording:
-    #         is_recording = True
-    #         start_time = time.time()
-    #     elif time.time() - start_time < record_duration:
-    #         is_recording = True
-    #     else:
-    #         is_recording = False
-    # elif is_recording and time.time() - start_time < record_duration:
-    #     is_recording = True
-    # else:
-    #     is_recording = False
-
-    if is_recording and ffmpeg_process is None:
-        ffmpeg_process = subprocess.Popen(ffmpeg_cmd, stdin=subprocess.PIPE)
-
-    # Write frame to ffmpeg stdin if recording
-    if is_recording and ffmpeg_process is not None:
-        ffmpeg_process.stdin.write(processed_frame.tobytes())
-
-    # Stop recording if needed and close ffmpeg subprocess
-    if not is_recording and ffmpeg_process is not None:
-        ffmpeg_process.stdin.close()
-        ffmpeg_process.wait()
-        ffmpeg_process = None
-
+    if len(sv.Detections.from_ultralytics(model(frame)[0])) > 0:
+        if not is_recording:
+            is_recording = True
+            start_time = time.time()
+        elif time.time() - start_time < record_duration:
+            is_recording = True
+        else:
+            is_recording = False
+    elif is_recording and time.time() - start_time < record_duration:
+        is_recording = True
+    else:
+        is_recording = False
 
     # Record if in recording state
     if is_recording:
