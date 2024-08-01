@@ -3,8 +3,10 @@ import numpy as np
 import supervision as sv
 from ultralytics import YOLO
 import time
-import logging
-logging.basicConfig(level=logging.ERROR)
+# import logging
+# logging.basicConfig(level=logging.ERROR)
+import requests
+
 
 model = YOLO("yolov8n.pt")
 tracker = sv.ByteTrack()
@@ -32,6 +34,27 @@ def callback(frame: np.ndarray, _: int) -> np.ndarray:
     return trace_annotator.annotate(
         annotated_frame, detections=detections)
 
+def send_telegram_message(bot_token, chat_id, message):
+    """
+    Sends a message to a Telegram chat.
+
+    Parameters:
+    - bot_token (str): The token of the Telegram bot.
+    - chat_id (str): The ID of the chat to send the message to.
+    - message (str): The message to send.
+
+    Returns:
+    - response (dict): The response from the Telegram API.
+    """
+    send_message_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    payload = {
+        "chat_id": chat_id,
+        "text": message
+    }
+    response = requests.post(send_message_url, data=payload)
+    return response.json()
+bot_token = "7063368407:AAHFXUgXDZBw4LkC4q-jLkBNgwJxQ2qw4yw"
+chat_id = "-1002043489442"
 camera = cv2.VideoCapture(0)  # 0 is usually the default camera
 # Initialize recording state and start time
 is_recording = False
