@@ -10,7 +10,7 @@ import requests
 
 model = YOLO("yolov8n.pt")
 tracker = sv.ByteTrack()
-box_annotator = sv.BoundingBoxAnnotator()
+box_annotator = sv.BoxAnnotator()
 label_annotator = sv.LabelAnnotator()
 trace_annotator = sv.TraceAnnotator()
 
@@ -81,6 +81,9 @@ while True:
         if not is_recording:
             is_recording = True
             start_time = time.time()
+            # Send a message to the Telegram chat when an object is detected and recording starts
+            message = "Object detected! Starting recording."
+            send_telegram_message(bot_token, chat_id, message)
         elif time.time() - start_time < record_duration:
             is_recording = True
         else:
