@@ -77,32 +77,12 @@ while True:
     print(is_recording, "is recording")
 
     # Check if objects were detected
-    detected_objects = sv.Detections.from_ultralytics(model(frame)[0])
-    if len(detected_objects) > 0:
+    if len(sv.Detections.from_ultralytics(model(frame)[0])) > 0:
         if not is_recording:
             is_recording = True
             start_time = time.time()
-
-            # Collect names of detected objects
-            # print(model.names)
-            # print(detected_objects)
-            # Detections(xyxy=array([[     468.62,      19.308,      1237.8,       712.7]], dtype=float32), mask=None, confidence=array([    0.95059], dtype=float32), class_id=array([0]), tracker_id=None, data={'class_name': array(['person'], dtype='<U6')})
-            # object_names = [model.names[obj.class_id] for obj in detected_objects]
-
-            # # Create a message with detected object names
-            # message = f"Object detected! Starting recording. Detected objects: {', '.join(object_names)}."
-            # Assuming detected_objects is a single detection object
-            class_ids = detected_objects.class_id
-            print(class_ids, "classIds")
-            # iterate through the class_ids list
-            # object_names = [model.names[detected_objects.class_id[0]]]  # Access the first (and possibly only) class_id
-            object_names = [model.names[class_id] for class_id in class_ids]
-
-
-            # Create a message with detected object names
-            message = f"Object detected! Starting recording. Detected objects: {', '.join(object_names)}."
-
-            # Send the message
+            # Send a message to the Telegram chat when an object is detected and recording starts
+            message = "Object detected! Starting recording."
             send_telegram_message(bot_token, chat_id, message)
         elif time.time() - start_time < record_duration:
             is_recording = True
