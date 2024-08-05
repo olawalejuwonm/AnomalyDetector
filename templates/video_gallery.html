@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Gallery</title>
+    <style>
+        .video-container {
+            position: relative;
+        }
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            display: none;
+            z-index: 1;
+            /* New styles for a bigger, button-like appearance */
+            padding: 10px 20px; /* Makes the button larger */
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+            color: white; /* White text color */
+            font-size: 20px; /* Larger font size */
+            border: none; /* Removes the border */
+            border-radius: 5px; /* Rounded corners */
+            text-align: center; /* Center the text inside the button */
+        }
+        video:hover + .play-button,
+        .play-button:hover {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Video Gallery</h1>
+
+    {% for video in videos %}
+    <div class="video-container">
+        <video id="video{{ loop.index }}">
+            <source src="{{ url_for('static', filename='recorded_videos/' ~ video) }}" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <div class="play-button" onclick="togglePlayPause('video{{ loop.index }}')">Play/Pause</div>
+    </div>
+    {% endfor %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('video').forEach(function (video) {
+                video.playbackRate = 0.1;
+            });
+            function fetchVideos() {
+                fetch('/check-videos')
+                    .then(response => response.json())
+                    .then(data => {
+                        const currentVideos = document.querySelectorAll('video > source').length;
+                        if (data.length > currentVideos) {
+                            location.reload(); // Reload the page to update the video list
+                        }
+                    })
+                    .catch(error => console.error('Error fetching videos:', error));
+            }
+            setInterval(fetchVideos, 5000); // Check for new videos every 5 seconds
+        });
+        function togglePlayPause(videoId) {
+            var video = document.getElementById(videoId);
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
+    </script>
+</body>
+
+</html>
