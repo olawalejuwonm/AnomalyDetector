@@ -66,7 +66,7 @@ record_duration = 20  # seconds
 
 
 # Step 1: Define the directory path
-video_directory = "recorded_videos"
+video_directory = "static/recorded_videos"
 
 # Step 2: Check if the directory exists, if not, create it
 if not os.path.exists(video_directory):
