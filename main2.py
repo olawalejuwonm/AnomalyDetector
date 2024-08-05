@@ -62,7 +62,7 @@ start_time = 0
 record_duration = 20  # seconds
 
 # Define the codec and create VideoWriter object
-fourcc = cv2.VideoWriter_fourcc(*'MP4V')
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Change 'MP4V' to 'mp4v'
 print(camera.get(3), camera.get(4))
 out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (int(camera.get(3)), int(camera.get(4))))
 
