@@ -6,6 +6,8 @@ import time
 # import logging
 # logging.basicConfig(level=logging.ERROR)
 import requests
+import os
+
 
 
 model = YOLO("yolov8n.pt")
@@ -61,12 +63,20 @@ is_recording = False
 start_time = 0
 record_duration = 20  # seconds
 
+
+# Step 1: Define the directory path
+video_directory = "recorded_videos"
+
+# Step 2: Check if the directory exists, if not, create it
+if not os.path.exists(video_directory):
+    os.makedirs(video_directory)
+
 # Define the codec and create VideoWriter object
 # fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Change 'MP4V' to 'mp4v'
 fourcc = cv2.VideoWriter_fourcc(*'VP90')  # Use VP80 or VP90 for WebM format
 output_file = 'output_filename.webm'  # Ensure the file extension is .webm
 print(camera.get(3), camera.get(4))
-out = cv2.VideoWriter(output_file, fourcc, 20.0, (int(camera.get(3)), int(camera.get(4))))
+out = cv2.VideoWriter(os.path.join(video_directory, output_file), fourcc, 20.0, (int(camera.get(3)), int(camera.get(4))))
 
 
 while True:
