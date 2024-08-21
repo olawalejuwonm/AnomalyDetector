@@ -8,15 +8,10 @@
     <style>
         .video-container {
             position: relative;
+            margin-bottom: 20px;
         }
         .play-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             cursor: pointer;
-            display: none;
-            z-index: 1;
             padding: 10px 20px;
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
@@ -24,10 +19,7 @@
             border: none;
             border-radius: 5px;
             text-align: center;
-        }
-        video:hover + .play-button,
-        .play-button:hover {
-            display: block;
+            margin-top: 10px;
         }
         .total-videos-card {
             margin-bottom: 20px;
@@ -60,6 +52,7 @@
             <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}" type="video/webm">
             Your browser does not support the video tag.
         </video>
+        <button class="delete-button" onclick="deleteVideo('{{ video.file_name }}')">Delete</button>
         <div class="play-button" onclick="togglePlayPause('video{{ loop.index }}')">Play/Pause</div>
         <div class="metadata-card">
             <h3>Metadata</h3>
@@ -90,7 +83,6 @@
             {% else %}
                 <p>No metadata available.</p>
             {% endif %}
-            <button class="delete-button" onclick="deleteVideo('{{ video.file_name }}')">Delete</button>
         </div>
     </div>
     {% endfor %}
