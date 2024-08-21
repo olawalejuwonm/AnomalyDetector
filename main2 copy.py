@@ -86,6 +86,7 @@ while True:
     if len(detected_objects) > 0:
         if not is_recording:
             is_recording = True  # Start recording
+            start_time = datetime.datetime.now()  # Record the start time
             out = start_new_recording()  # Start a new recording with a new timestamp
             class_ids = detected_objects.class_id  # Get class IDs of detected objects
             object_names = [model.names[class_id] for class_id in class_ids]  # Get names of detected objects
@@ -133,7 +134,16 @@ while True:
                 json.dump(metadata, f, indent=4)
 
     if is_recording:
-        out.write(processed_frame)  # Write the processed frame to the output file
+        elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
+        if elapsed_time > record_duration:
+            is_recording = False  # Stop recording
+            out.release()  # Release the VideoWriter object
+            # Write metadata to a file
+            metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
+            with open(metadata_file, 'w') as f:
+                json.dump(metadata, f, indent=4)
+        else:
+            out.write(processed_frame)  # Write the processed frame to the output file
 
     cv2.imshow("Processed Frame", processed_frame)  # Display the processed frame
 
