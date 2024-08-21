@@ -1,8 +1,14 @@
+# import json
+
+# print(json.dumps({0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter', 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant', 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie', 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite', 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket', 39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl', 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog', 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed', 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard', 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush'}, indent=4))
+
+
 import cv2
 import numpy as np
 import supervision as sv
 from ultralytics import YOLO
 import time
+
 # import logging
 # logging.basicConfig(level=logging.ERROR)
 import requests
@@ -15,7 +21,6 @@ label_annotator = sv.LabelAnnotator()
 trace_annotator = sv.TraceAnnotator()
 
 
-
 def callback(frame: np.ndarray, _: int) -> np.ndarray:
     results = model(frame)[0]
     detections = sv.Detections.from_ultralytics(results)
@@ -23,16 +28,15 @@ def callback(frame: np.ndarray, _: int) -> np.ndarray:
 
     labels = [
         f"#{tracker_id} {results.names[class_id]}"
-        for class_id, tracker_id
-        in zip(detections.class_id, detections.tracker_id)
+        for class_id, tracker_id in zip(detections.class_id, detections.tracker_id)
     ]
 
-    annotated_frame = box_annotator.annotate(
-        frame.copy(), detections=detections)
+    annotated_frame = box_annotator.annotate(frame.copy(), detections=detections)
     annotated_frame = label_annotator.annotate(
-        annotated_frame, detections=detections, labels=labels)
-    return trace_annotator.annotate(
-        annotated_frame, detections=detections)
+        annotated_frame, detections=detections, labels=labels
+    )
+    return trace_annotator.annotate(annotated_frame, detections=detections)
+
 
 def send_telegram_message(bot_token, chat_id, message):
     """
@@ -47,12 +51,11 @@ def send_telegram_message(bot_token, chat_id, message):
     - response (dict): The response from the Telegram API.
     """
     send_message_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    payload = {
-        "chat_id": chat_id,
-        "text": message
-    }
+    payload = {"chat_id": chat_id, "text": message}
     response = requests.post(send_message_url, data=payload)
     return response.json()
+
+
 bot_token = "7063368407:AAHFXUgXDZBw4LkC4q-jLkBNgwJxQ2qw4yw"
 chat_id = "-1002043489442"
 camera = cv2.VideoCapture(0)  # 0 is usually the default camera
@@ -62,9 +65,11 @@ start_time = 0
 record_duration = 20  # seconds
 
 # Define the codec and create VideoWriter object
-fourcc = cv2.VideoWriter_fourcc(*'MP4V')
+fourcc = cv2.VideoWriter_fourcc(*"MP4V")
 print(camera.get(3), camera.get(4))
-out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (int(camera.get(3)), int(camera.get(4))))
+out = cv2.VideoWriter(
+    "output.mp4", fourcc, 20.0, (int(camera.get(3)), int(camera.get(4)))
+)
 
 
 while True:
@@ -98,9 +103,9 @@ while True:
         out.write(processed_frame)
 
     # Display the processed frame
-    cv2.imshow('Processed Frame', processed_frame)
+    cv2.imshow("Processed Frame", processed_frame)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):  # Press 'q' to quit
+    if cv2.waitKey(1) & 0xFF == ord("q"):  # Press 'q' to quit
         break
 
 camera.release()

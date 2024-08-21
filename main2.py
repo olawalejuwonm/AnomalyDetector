@@ -47,15 +47,19 @@ def send_telegram_message(bot_token, chat_id, message):
     - message (str): The message to send.
 
     Returns:
-    - response (dict): The response from the Telegram API.
+    - response (dict): The response from the Telegram API or an error message.
     """
     send_message_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     payload = {
         "chat_id": chat_id,
         "text": message
     }
-    response = requests.post(send_message_url, data=payload)
-    return response.json()
+    try:
+        response = requests.post(send_message_url, data=payload)
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return {"error": str(e)}
 bot_token = "7063368407:AAHFXUgXDZBw4LkC4q-jLkBNgwJxQ2qw4yw"
 chat_id = "-1002043489442"
 camera = cv2.VideoCapture(0)  # 0 is usually the default camera
