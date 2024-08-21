@@ -98,12 +98,31 @@ while True:
                 metadata['detections'][tracker_id] = {
                     'class_id': int(class_id),  # Ensure class_id is a standard Python int
                     'class_name': model.names[class_id],
-                    'positions': []
+                    'positions': [],
+                    'previous_position': None  # Initialize previous position
                 }
+
+            # Get the current bounding box
+            current_bbox = bbox.tolist()
+
+            # Determine the movement direction
+            movement_direction = "stationary"
+            if metadata['detections'][tracker_id]['previous_position'] is not None:
+                previous_bbox = metadata['detections'][tracker_id]['previous_position']
+                if current_bbox[0] > previous_bbox[0]:
+                    movement_direction = "right"
+                elif current_bbox[0] < previous_bbox[0]:
+                    movement_direction = "left"
+
+            # Update the metadata with the current position and movement direction
             metadata['detections'][tracker_id]['positions'].append({
-                'bbox': bbox.tolist(),
-                'timestamp': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                'bbox': current_bbox,
+                'timestamp': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                'movement_direction': movement_direction
             })
+
+            # Update the previous position
+            metadata['detections'][tracker_id]['previous_position'] = current_bbox
     else:
         if is_recording:
             is_recording = False  # Stop recording
