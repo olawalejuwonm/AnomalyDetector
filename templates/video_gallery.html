@@ -36,6 +36,15 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        .delete-button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -81,6 +90,7 @@
             {% else %}
                 <p>No metadata available.</p>
             {% endif %}
+            <button class="delete-button" onclick="deleteVideo('{{ video.file_name }}')">Delete</button>
         </div>
     </div>
     {% endfor %}
@@ -95,7 +105,6 @@
                 fetch('/check-videos')
                     .then(response => response.json())
                     .then(data => {
-                        // console.log('Fetched videos:', data);
                         const currentVideos = document.querySelectorAll('video > source').length;
                         if (data.length > currentVideos) {
                             location.reload(); // Reload the page to update the video list
@@ -107,17 +116,15 @@
 
             function updateTotalVideosCount(videos) {
                 const today = new Date().toISOString().split('T')[0];
-                console.log('Today:', today, videos);
                 const totalVideosToday = videos.filter(video => {
                     const fileNameDate = video.split('_')[1]; // Assuming the date is part of the file name
-                    console.log('File Name Date:', fileNameDate);
                     return fileNameDate === today;
                 }).length;
                 document.getElementById('total-videos-count').textContent = totalVideosToday;
             }
 
             fetchVideos(); // Initial fetch to update the count
-            setInterval(fetchVideos, 5000); // Check for new videos every 10 seconds
+            setInterval(fetchVideos, 5000); // Check for new videos every 5 seconds
         });
 
         function togglePlayPause(videoId) {
@@ -126,6 +133,28 @@
                 video.play();
             } else {
                 video.pause();
+            }
+        }
+
+        function deleteVideo(fileName) {
+            if (confirm('Are you sure you want to delete this video?')) {
+                fetch('/delete-video', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ file_name: fileName })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.success);
+                        location.reload(); // Reload the page to update the video list
+                    } else {
+                        alert(data.error);
+                    }
+                })
+                .catch(error => console.error('Error deleting video:', error));
             }
         }
     </script>
