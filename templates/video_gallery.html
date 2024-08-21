@@ -17,24 +17,33 @@
             cursor: pointer;
             display: none;
             z-index: 1;
-            /* New styles for a bigger, button-like appearance */
-            padding: 10px 20px; /* Makes the button larger */
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
-            color: white; /* White text color */
-            font-size: 20px; /* Larger font size */
-            border: none; /* Removes the border */
-            border-radius: 5px; /* Rounded corners */
-            text-align: center; /* Center the text inside the button */
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
         }
         video:hover + .play-button,
         .play-button:hover {
             display: block;
+        }
+        .total-videos-card {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
     </style>
 </head>
 
 <body>
     <h1>Video Gallery</h1>
+    <div class="total-videos-card">
+        <h3>Total Videos for Today: <span id="total-videos-count">Loading...</span></h3>
+    </div>
 
     {% for video in videos %}
     <div class="video-container">
@@ -55,7 +64,7 @@
                     {% for tracker_id, detection in video.metadata.detections.items() %}
                         <li>
                             <strong>Tracker ID:</strong> {{ tracker_id }}<br>
-                            <strong>Class Name:</strong> {{ detection.class_name }}<br>
+                            <strong>Object Detected:</strong> {{ detection.class_name }}<br>
                             <strong>Positions:</strong>
                             <ul>
                                 {% for position in detection.positions %}
@@ -74,26 +83,43 @@
             {% endif %}
         </div>
     </div>
-{% endfor %}
+    {% endfor %}
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('video').forEach(function (video) {
                 video.playbackRate = 0.1;
             });
+
             function fetchVideos() {
                 fetch('/check-videos')
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Fetched videos:', data);
+                        // console.log('Fetched videos:', data);
                         const currentVideos = document.querySelectorAll('video > source').length;
                         if (data.length > currentVideos) {
                             location.reload(); // Reload the page to update the video list
                         }
+                        updateTotalVideosCount(data);
                     })
                     .catch(error => console.error('Error fetching videos:', error));
             }
-            setInterval(fetchVideos, 10000); // Check for new videos every 10 seconds
+
+            function updateTotalVideosCount(videos) {
+                const today = new Date().toISOString().split('T')[0];
+                console.log('Today:', today, videos);
+                const totalVideosToday = videos.filter(video => {
+                    const fileNameDate = video.split('_')[1]; // Assuming the date is part of the file name
+                    console.log('File Name Date:', fileNameDate);
+                    return fileNameDate === today;
+                }).length;
+                document.getElementById('total-videos-count').textContent = totalVideosToday;
+            }
+
+            fetchVideos(); // Initial fetch to update the count
+            setInterval(fetchVideos, 5000); // Check for new videos every 10 seconds
         });
+
         function togglePlayPause(videoId) {
             var video = document.getElementById(videoId);
             if (video.paused) {
