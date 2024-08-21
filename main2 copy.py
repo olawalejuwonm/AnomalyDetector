@@ -48,8 +48,8 @@ def send_telegram_message(bot_token, chat_id, message):
     response = requests.post(send_message_url, data=payload)  # Send the POST request
     return response.json()  # Return the response as JSON
 
-bot_token = "YOUR_BOT_TOKEN"  # Telegram bot token
-chat_id = "YOUR_CHAT_ID"  # Telegram chat ID
+bot_token = "7063368407:AAHFXUgXDZBw4LkC4q-jLkBNgwJxQ2qw4yw"  # Telegram bot token
+chat_id = "-1002043489442"  # Telegram chat ID
 camera = cv2.VideoCapture(0)  # Open the default camera
 is_recording = False  # Initialize recording state
 start_time = 0  # Initialize start time
