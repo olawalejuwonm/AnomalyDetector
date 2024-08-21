@@ -48,6 +48,22 @@ def send_telegram_message(bot_token, chat_id, message):
     response = requests.post(send_message_url, data=payload)  # Send the POST request
     return response.json()  # Return the response as JSON
 
+def write_metadata_to_file(metadata, start_time, record_duration, video_directory):
+    """
+    Writes metadata to a file.
+
+    Parameters:
+    - metadata (dict): The metadata dictionary.
+    - start_time (datetime): The start time of the recording.
+    - record_duration (int): The maximum duration of the recording.
+    - video_directory (str): The directory where the video and metadata files are stored.
+    """
+    metadata['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    metadata['total_duration'] = min((datetime.datetime.now() - start_time).total_seconds(), record_duration)
+    metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
+    with open(metadata_file, 'w') as f:
+        json.dump(metadata, f, indent=4)
+
 bot_token = "7063368407:AAHFXUgXDZBw4LkC4q-jLkBNgwJxQ2qw4yw"  # Telegram bot token
 chat_id = "-1002043489442"  # Telegram chat ID
 camera = cv2.VideoCapture(0)  # Open the default camera
@@ -129,26 +145,14 @@ while True:
         if is_recording:
             is_recording = False  # Stop recording
             out.release()  # Release the VideoWriter object
-            # Calculate total duration and add to metadata
-            metadata['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            metadata['total_duration'] = (datetime.datetime.now() - start_time).total_seconds()
-            # Write metadata to a file
-            metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
-            with open(metadata_file, 'w') as f:
-                json.dump(metadata, f, indent=4)
+            write_metadata_to_file(metadata, start_time, record_duration, video_directory)  # Write metadata to a file
 
     if is_recording:
         elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
-        if elapsed_time > record_duration:
+        if elapsed_time >= record_duration:
             is_recording = False  # Stop recording
             out.release()  # Release the VideoWriter object
-            # Calculate total duration and add to metadata
-            metadata['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            metadata['total_duration'] = elapsed_time
-            # Write metadata to a file
-            metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
-            with open(metadata_file, 'w') as f:
-                json.dump(metadata, f, indent=4)
+            write_metadata_to_file(metadata, start_time, record_duration, video_directory)  # Write metadata to a file
         else:
             out.write(processed_frame)  # Write the processed frame to the output file
 
@@ -160,12 +164,5 @@ while True:
 camera.release()  # Release the camera
 if is_recording:
     out.release()  # Release the VideoWriter object
-    # Calculate total duration and add to metadata if recording was active
-    metadata['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    metadata['total_duration'] = (datetime.datetime.now() - start_time).total_seconds()
-    # Write metadata to a file
-    metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
-    with open(metadata_file, 'w') as f:
-        print(metadata)
-        json.dump(metadata, f, indent=4)
+    write_metadata_to_file(metadata, start_time, record_duration, video_directory)  # Write metadata to a file
 cv2.destroyAllWindows()  # Close all OpenCV windows
