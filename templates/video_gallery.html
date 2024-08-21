@@ -65,8 +65,8 @@
                 <ul>
                     {% for tracker_id, detection in video.metadata.detections.items() %}
                         <li>
-                            <strong>Tracker ID:</strong> {{ tracker_id }}<br>
-                            <strong>Object Detected:</strong> {{ detection.class_name }}<br>
+                            <strong>Object Identifier:</strong> {{ tracker_id }}<br>
+                            <strong>Name:</strong> {{ detection.class_name }}<br>
                             <strong>Positions:</strong>
                             <ul>
                                 {% for position in detection.positions %}
