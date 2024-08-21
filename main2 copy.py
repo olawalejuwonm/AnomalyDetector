@@ -19,7 +19,7 @@ trace_annotator = (
 )  # Initialize the TraceAnnotator for drawing traces
 
 
-def callback(frame: np.ndarray, _: int) -> np.ndarray:
+def callback(frame: np.ndarray) -> np.ndarray:
     results = model(frame)[0]  # Run the YOLO model on the frame and get the results
     detections = sv.Detections.from_ultralytics(
         results
@@ -39,7 +39,10 @@ def callback(frame: np.ndarray, _: int) -> np.ndarray:
     annotated_frame = label_annotator.annotate(
         annotated_frame, detections=detections, labels=labels
     )  # Annotate frame with labels
-    return detections, annotated_frame  # Return detections and processed frame # Annotate frame with traces
+    return (
+        detections,
+        annotated_frame,
+    )  # Return detections and processed frame # Annotate frame with traces
 
 
 def send_telegram_message(bot_token, chat_id, message):
@@ -92,9 +95,7 @@ while True:
         print("Failed to grab frame")  # Print error message if frame is not grabbed
         break
 
-    detected_objects, processed_frame = callback(
-        frame, 0
-    )  # Process the frame using the callback function
+    detected_objects, processed_frame = callback(frame)  # Process the frame using the callback function
 
     # detected_objects = sv.Detections.from_ultralytics(
     #     model(frame)[0]
