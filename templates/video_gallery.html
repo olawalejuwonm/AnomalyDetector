@@ -39,12 +39,42 @@
     {% for video in videos %}
     <div class="video-container">
         <video id="video{{ loop.index }}">
-            <source src="{{ url_for('static', filename='recorded_videos/' ~ video) }}" type="video/webm">
+            <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}" type="video/webm">
             Your browser does not support the video tag.
         </video>
         <div class="play-button" onclick="togglePlayPause('video{{ loop.index }}')">Play/Pause</div>
+        <div class="metadata-card">
+            <h3>Metadata</h3>
+            <p><strong>File Name:</strong> {{ video.file_name }}</p>
+            {% if video.metadata %}
+                <p><strong>Start Time:</strong> {{ video.metadata.start_time }}</p>
+                <p><strong>End Time:</strong> {{ video.metadata.end_time }}</p>
+                <p><strong>Total Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
+                <h4>Detections:</h4>
+                <ul>
+                    {% for tracker_id, detection in video.metadata.detections.items() %}
+                        <li>
+                            <strong>Tracker ID:</strong> {{ tracker_id }}<br>
+                            <strong>Class Name:</strong> {{ detection.class_name }}<br>
+                            <strong>Positions:</strong>
+                            <ul>
+                                {% for position in detection.positions %}
+                                    <li>
+                                        <strong>Timestamp:</strong> {{ position.timestamp }}<br>
+                                        <strong>Bounding Box:</strong> {{ position.bbox }}<br>
+                                        <strong>Movement Direction:</strong> {{ position.movement_direction }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No metadata available.</p>
+            {% endif %}
+        </div>
     </div>
-    {% endfor %}
+{% endfor %}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('video').forEach(function (video) {
@@ -54,6 +84,7 @@
                 fetch('/check-videos')
                     .then(response => response.json())
                     .then(data => {
+                        console.log('Fetched videos:', data);
                         const currentVideos = document.querySelectorAll('video > source').length;
                         if (data.length > currentVideos) {
                             location.reload(); // Reload the page to update the video list
@@ -61,7 +92,7 @@
                     })
                     .catch(error => console.error('Error fetching videos:', error));
             }
-            setInterval(fetchVideos, 5000); // Check for new videos every 5 seconds
+            setInterval(fetchVideos, 10000); // Check for new videos every 10 seconds
         });
         function togglePlayPause(videoId) {
             var video = document.getElementById(videoId);
