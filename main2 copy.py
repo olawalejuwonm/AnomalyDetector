@@ -107,7 +107,8 @@ while True:
             out = start_new_recording()  # Start a new recording with a new timestamp
             class_ids = detected_objects.class_id  # Get class IDs of detected objects
             object_names = [model.names[class_id] for class_id in class_ids]  # Get names of detected objects
-            message = f"Object detected! Starting recording. Detected objects: {', '.join(object_names)}."  # Create message
+            object_count = len(object_names)  # Count the number of detected objects
+            message = f"Object detected! Starting recording. Detected {object_count} objects: {', '.join(object_names)}."  # Create message
             send_telegram_message(bot_token, chat_id, message)  # Send the message
         # Update metadata with detected objects
         for class_id, tracker_id, bbox in zip(detected_objects.class_id, detected_objects.tracker_id, detected_objects.xyxy):
