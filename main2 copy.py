@@ -68,6 +68,7 @@ def start_new_recording():
     output_file = f'output_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.webm'  # Output file name
     metadata['file_name'] = output_file  # Add file name to metadata
     metadata['detections'] = {}  # Initialize detections dictionary in metadata
+    metadata['start_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Add start time to metadata
     return cv2.VideoWriter(
         os.path.join(video_directory, output_file),
         fourcc,
@@ -128,6 +129,9 @@ while True:
         if is_recording:
             is_recording = False  # Stop recording
             out.release()  # Release the VideoWriter object
+            # Calculate total duration and add to metadata
+            metadata['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            metadata['total_duration'] = (datetime.datetime.now() - start_time).total_seconds()
             # Write metadata to a file
             metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
             with open(metadata_file, 'w') as f:
@@ -138,6 +142,9 @@ while True:
         if elapsed_time > record_duration:
             is_recording = False  # Stop recording
             out.release()  # Release the VideoWriter object
+            # Calculate total duration and add to metadata
+            metadata['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            metadata['total_duration'] = elapsed_time
             # Write metadata to a file
             metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
             with open(metadata_file, 'w') as f:
@@ -153,7 +160,10 @@ while True:
 camera.release()  # Release the camera
 if is_recording:
     out.release()  # Release the VideoWriter object
-    # Write metadata to a file if recording was active
+    # Calculate total duration and add to metadata if recording was active
+    metadata['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    metadata['total_duration'] = (datetime.datetime.now() - start_time).total_seconds()
+    # Write metadata to a file
     metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
     with open(metadata_file, 'w') as f:
         print(metadata)
