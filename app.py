@@ -1,6 +1,8 @@
 from flask import Flask, render_template, jsonify, request  # Import necessary Flask modules
 import os  # Import os module for interacting with the operating system
 import json  # Import json module for handling JSON data
+import sys  # Import sys module to get the path to the current Python interpreter
+import subprocess  # Import subprocess module for running external scripts
 
 app = Flask(__name__)  # Create a Flask application instance
 
@@ -45,6 +47,15 @@ def delete_video():
         return jsonify({'success': f'{video_file} deleted successfully'})  # Return success message
     else:
         return jsonify({'error': 'Video file not found'}), 404  # Return error if the video file is not found
+
+@app.route("/run-main", methods=["POST"])  # Define route to run main.py
+def run_main():
+    try:
+        # Use the same Python interpreter that is running the Flask application
+        result = subprocess.run([sys.executable, "main.py"], capture_output=True, text=True)
+        return jsonify({"output": result.stdout, "error": result.stderr})  # Return the output and error as JSON
+    except Exception as e:
+        return jsonify({"error": str(e)})  # Return any exception as JSON
 
 if __name__ == "__main__":  # Check if the script is run directly
     app.run(host="0.0.0.0", debug=True)  # Run the Flask application with debugging enabled

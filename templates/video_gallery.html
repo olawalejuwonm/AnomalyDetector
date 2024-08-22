@@ -1,88 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">  <!-- Specifies the language of the document -->
+<html lang="en"> <!-- Specifies the language of the document -->
 
 <head>
-    <meta charset="UTF-8">  <!-- Specifies the character encoding for the HTML document -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- Sets the viewport to make the website responsive -->
-    <title>Surveillance System</title>  <!-- Title of the webpage -->
+    <meta charset="UTF-8"> <!-- Specifies the character encoding for the HTML document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Sets the viewport to make the website responsive -->
+    <title>Surveillance System</title> <!-- Title of the webpage -->
     <style>
         /* Inline CSS for styling the video gallery */
         .video-container {
-            position: relative;  /* Position relative for absolute positioning of play button */
-            margin-bottom: 20px;  /* Margin below each video container */
+            position: relative;
+            /* Position relative for absolute positioning of play button */
+            margin-bottom: 20px;
+            /* Margin below each video container */
         }
+
         .play-button {
-            cursor: pointer;  /* Cursor changes to pointer on hover */
-            padding: 10px 20px;  /* Padding inside the play button */
-            background-color: rgba(0, 0, 0, 0.7);  /* Semi-transparent background color */
-            color: white;  /* Text color */
-            font-size: 20px;  /* Font size */
-            border: none;  /* No border */
-            border-radius: 5px;  /* Rounded corners */
-            text-align: center;  /* Center text */
-            margin-top: 10px;  /* Margin above the play button */
+            cursor: pointer;
+            /* Cursor changes to pointer on hover */
+            padding: 10px 20px;
+            /* Padding inside the play button */
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Semi-transparent background color */
+            color: white;
+            /* Text color */
+            font-size: 20px;
+            /* Font size */
+            border: none;
+            /* No border */
+            border-radius: 5px;
+            /* Rounded corners */
+            text-align: center;
+            /* Center text */
+            margin-top: 10px;
+            /* Margin above the play button */
         }
+
         .total-videos-card {
-            margin-bottom: 20px;  /* Margin below the total videos card */
-            padding: 10px;  /* Padding inside the total videos card */
-            background-color: #f0f0f0;  /* Background color */
-            border: 1px solid #ccc;  /* Border color and style */
-            border-radius: 5px;  /* Rounded corners */
+            margin-bottom: 20px;
+            /* Margin below the total videos card */
+            padding: 10px;
+            /* Padding inside the total videos card */
+            background-color: #f0f0f0;
+            /* Background color */
+            border: 1px solid #ccc;
+            /* Border color and style */
+            border-radius: 5px;
+            /* Rounded corners */
         }
+
         .delete-button {
-            margin-top: 10px;  /* Margin above the delete button */
-            padding: 5px 10px;  /* Padding inside the delete button */
-            background-color: red;  /* Background color */
-            color: white;  /* Text color */
-            border: none;  /* No border */
-            border-radius: 5px;  /* Rounded corners */
-            cursor: pointer;  /* Cursor changes to pointer on hover */
+            margin-top: 10px;
+            /* Margin above the delete button */
+            padding: 5px 10px;
+            /* Padding inside the delete button */
+            background-color: red;
+            /* Background color */
+            color: white;
+            /* Text color */
+            border: none;
+            /* No border */
+            border-radius: 5px;
+            /* Rounded corners */
+            cursor: pointer;
+            /* Cursor changes to pointer on hover */
         }
     </style>
 </head>
 
 <body>
-    <h1>Surveillance System </h1>  <!-- Heading of the webpage -->
+    <h1>Surveillance System </h1> <!-- Heading of the webpage -->
+    <button id="run-surveillance" class="action-button">Run Surveillance System</button>
+
     <div class="total-videos-card">
-        <h3>Total Videos for Today: <span id="total-videos-count">Loading...</span></h3>  <!-- Display total videos count -->
+        <h3>Total Videos for Today: <span id="total-videos-count">Loading...</span></h3>
+        <!-- Display total videos count -->
     </div>
 
-    {% for video in videos %}  <!-- Loop through each video in the videos list -->
+    {% for video in videos %} <!-- Loop through each video in the videos list -->
     <div class="video-container">
-        <video id="video{{ loop.index }}">  <!-- Video element with a unique ID -->
-            <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}" type="video/webm">  <!-- Video source -->
+        <video id="video{{ loop.index }}"> <!-- Video element with a unique ID -->
+            <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}" type="video/webm">
+            <!-- Video source -->
             Your browser does not support the video tag.
         </video>
-        <button class="delete-button" onclick="deleteVideo('{{ video.file_name }}')">Delete</button>  <!-- Delete button -->
-        <div class="play-button" onclick="togglePlayPause('video{{ loop.index }}')">Play/Pause</div>  <!-- Play/Pause button -->
+        <button class="delete-button" onclick="deleteVideo('{{ video.file_name }}')">Delete</button>
+        <!-- Delete button -->
+        <div class="play-button" onclick="togglePlayPause('video{{ loop.index }}')">Play/Pause</div>
+        <!-- Play/Pause button -->
         <div class="metadata-card">
-            <h3>Metadata</h3>  <!-- Metadata heading -->
-            <p><strong>File Name:</strong> {{ video.file_name }}</p>  <!-- Display file name -->
-            {% if video.metadata %}  <!-- Check if metadata exists -->
-                <p><strong>Start Time:</strong> {{ video.metadata.start_time }}</p>  <!-- Display start time -->
-                <p><strong>End Time:</strong> {{ video.metadata.end_time }}</p>  <!-- Display end time -->
-                <p><strong>Total Duration:</strong> {{ video.metadata.total_duration }} seconds</p>  <!-- Display total duration -->
-                <h4>Detections:</h4>  <!-- Detections heading -->
-                <ul>
-                    {% for tracker_id, detection in video.metadata.detections.items() %}  <!-- Loop through each detection -->
+            <h3>Metadata</h3> <!-- Metadata heading -->
+            <p><strong>File Name:</strong> {{ video.file_name }}</p> <!-- Display file name -->
+            {% if video.metadata %} <!-- Check if metadata exists -->
+            <p><strong>Start Time:</strong> {{ video.metadata.start_time }}</p> <!-- Display start time -->
+            <p><strong>End Time:</strong> {{ video.metadata.end_time }}</p> <!-- Display end time -->
+            <p><strong>Total Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
+            <!-- Display total duration -->
+            <h4>Detections:</h4> <!-- Detections heading -->
+            <ul>
+                {% for tracker_id, detection in video.metadata.detections.items() %}
+                <!-- Loop through each detection -->
+                <li>
+                    <strong>Object Identifier:</strong> {{ tracker_id }}<br> <!-- Display object identifier -->
+                    <strong>Name:</strong> {{ detection.class_name }}<br> <!-- Display class name -->
+                    <strong>Positions:</strong>
+                    <ul>
+                        {% for position in detection.positions %} <!-- Loop through each position -->
                         <li>
-                            <strong>Object Identifier:</strong> {{ tracker_id }}<br>  <!-- Display object identifier -->
-                            <strong>Name:</strong> {{ detection.class_name }}<br>  <!-- Display class name -->
-                            <strong>Positions:</strong>
-                            <ul>
-                                {% for position in detection.positions %}  <!-- Loop through each position -->
-                                    <li>
-                                        <strong>Timestamp:</strong> {{ position.timestamp }}<br>  <!-- Display timestamp -->
-                                        <strong>Bounding Box:</strong> {{ position.bbox }}<br>  <!-- Display bounding box -->
-                                        <strong>Movement Direction:</strong> {{ position.movement_direction }}  <!-- Display movement direction -->
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                            <strong>Timestamp:</strong> {{ position.timestamp }}<br> <!-- Display timestamp -->
+                            <strong>Bounding Box:</strong> {{ position.bbox }}<br> <!-- Display bounding box -->
+                            <strong>Movement Direction:</strong> {{ position.movement_direction }}
+                            <!-- Display movement direction -->
                         </li>
-                    {% endfor %}
-                </ul>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
             {% else %}
-                <p>No metadata available.</p>  <!-- Display message if no metadata is available -->
+            <p>No metadata available.</p> <!-- Display message if no metadata is available -->
             {% endif %}
         </div>
     </div>
@@ -94,7 +130,7 @@
             document.querySelectorAll('video').forEach(function (video) {
                 video.playbackRate = 0.1;
             });
-    
+
             // Function to fetch the list of videos from the server
             function fetchVideos() {
                 fetch('/check-videos')
@@ -108,7 +144,7 @@
                     })
                     .catch(error => console.error('Error fetching videos:', error));  // Log any errors
             }
-    
+
             // Function to update the total videos count for today
             function updateTotalVideosCount(videos) {
                 const today = new Date().toISOString().split('T')[0];  // Get today's date in YYYY-MM-DD format
@@ -118,11 +154,30 @@
                 }).length;
                 document.getElementById('total-videos-count').textContent = totalVideosToday;  // Update the total videos count
             }
-    
+
             fetchVideos();  // Initial fetch to update the count
             setInterval(fetchVideos, 5000);  // Check for new videos every 5 seconds
+
+            // Function to run the surveillance system
+            function runSurveillanceSystem() {
+                fetch('/run-main', {
+                    method: 'POST'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert('Error: ' + data.error);  // Alert error message
+                        } else {
+                            alert('Surveillance system started successfully.');  // Alert success message
+                        }
+                    })
+                    .catch(error => console.error('Error running surveillance system:', error));  // Log any errors
+            }
+
+            // Add event listener to the run surveillance button
+            document.getElementById('run-surveillance').addEventListener('click', runSurveillanceSystem);
         });
-    
+
         // Function to toggle play/pause for a video
         function togglePlayPause(videoId) {
             var video = document.getElementById(videoId);  // Get the video element by ID
@@ -132,7 +187,7 @@
                 video.pause();  // Pause the video if it is playing
             }
         }
-    
+
         // Function to delete a video
         function deleteVideo(fileName) {
             if (confirm('Are you sure you want to delete this video?')) {  // Confirm deletion
@@ -143,16 +198,16 @@
                     },
                     body: JSON.stringify({ file_name: fileName })  // Send the video file name in the request body
                 })
-                .then(response => response.json())  // Parse the JSON response
-                .then(data => {
-                    if (data.success) {
-                        alert(data.success);  // Alert success message
-                        location.reload();  // Reload the page to update the video list
-                    } else {
-                        alert(data.error);  // Alert error message
-                    }
-                })
-                .catch(error => console.error('Error deleting video:', error));  // Log any errors
+                    .then(response => response.json())  // Parse the JSON response
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.success);  // Alert success message
+                            location.reload();  // Reload the page to update the video list
+                        } else {
+                            alert(data.error);  // Alert error message
+                        }
+                    })
+                    .catch(error => console.error('Error deleting video:', error));  // Log any errors
             }
         }
     </script>

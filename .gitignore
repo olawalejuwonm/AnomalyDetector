@@ -3,3 +3,4 @@ retinanet_resnet50_fpn_coco-eeacb38b.pth
 yolov3.pt
 .venv
 static/recorded_videos
+__pycache__
