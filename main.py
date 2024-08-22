@@ -6,6 +6,7 @@ import requests  # Import the requests library for making HTTP requests
 import os  # Import the os module for interacting with the operating system
 import datetime  # Import the datetime module for date and time operations
 import json  # Import the json module for handling JSON data
+import threading  # to handle concurrent execution
 
 model = YOLO("yolov8n.pt")  # Load the YOLO model with the specified weights
 tracker = sv.ByteTrack()  # Initialize the ByteTrack tracker
@@ -55,10 +56,13 @@ def send_telegram_message(bot_token, chat_id, message):
     Returns:
     - response (dict): The response from the Telegram API.
     """
-    send_message_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"  # URL for sending messages
-    payload = {"chat_id": chat_id, "text": message}  # Payload for the POST request
-    response = requests.post(send_message_url, data=payload)  # Send the POST request
-    return response.json()  # Return the response as JSON
+    try:
+        send_message_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"  # URL for sending messages
+        payload = {"chat_id": chat_id, "text": message}  # Payload for the POST request
+        response = requests.post(send_message_url, data=payload)  # Send the POST request
+        return response.json()  # Return the response as JSON
+    except Exception as e:
+        print(f"An error occurred sending notification: {e}")
 
 
 def write_metadata_to_file(metadata, start_time, record_duration, video_directory):
@@ -78,6 +82,13 @@ def write_metadata_to_file(metadata, start_time, record_duration, video_director
     metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
     with open(metadata_file, "w") as f:
         json.dump(metadata, f, indent=4)
+
+
+def release_video(out, metadata, start_time, record_duration, video_directory):
+    out.release()  # Release the VideoWriter object
+    write_metadata_to_file(
+        metadata, start_time, record_duration, video_directory
+    )  # Write metadata to a file
 
 
 bot_token = "7063368407:AAHFXUgXDZBw4LkC4q-jLkBNgwJxQ2qw4yw"  # Telegram bot token
@@ -132,7 +143,7 @@ while True:
                 model.names[class_id] for class_id in class_ids
             ]  # Get names of detected objects
             object_count = len(object_names)  # Count the number of detected objects
-            message = f"Object detected! Starting recording. Detected {object_count} objects: {', '.join(object_names)}."  # Create message
+            message = f"The Surveillance System has detected {object_count} an object and started recording. Object detected: {', '.join(object_names)}. "  # Create message
             send_telegram_message(bot_token, chat_id, message)  # Send the message
         # Update metadata with detected objects
         for class_id, tracker_id, bbox in zip(
@@ -177,19 +188,21 @@ while True:
     else:
         if is_recording:
             is_recording = False  # Stop recording
-            out.release()  # Release the VideoWriter object
-            write_metadata_to_file(
-                metadata, start_time, record_duration, video_directory
-            )  # Write metadata to a file
+            # Use a separate thread to release the video and write metadata
+            threading.Thread(
+                target=release_video,
+                args=(out, metadata, start_time, record_duration, video_directory),
+            ).start()
 
     if is_recording:
         elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
         if elapsed_time >= record_duration:
             is_recording = False  # Stop recording
-            out.release()  # Release the VideoWriter object
-            write_metadata_to_file(
-                metadata, start_time, record_duration, video_directory
-            )  # Write metadata to a file
+            # Use a separate thread to release the video and write metadata
+            threading.Thread(
+                target=release_video,
+                args=(out, metadata, start_time, record_duration, video_directory),
+            ).start()
         else:
             out.write(processed_frame)  # Write the processed frame to the output file
 
@@ -203,7 +216,8 @@ while True:
 camera.release()  # Release the camera
 if is_recording:
     out.release()  # Release the VideoWriter object
-    write_metadata_to_file(
-        metadata, start_time, record_duration, video_directory
-    )  # Write metadata to a file
+    threading.Thread(
+        target=release_video,
+        args=(out, metadata, start_time, record_duration, video_directory),
+    ).start()
 cv2.destroyAllWindows()  # Close all OpenCV windows

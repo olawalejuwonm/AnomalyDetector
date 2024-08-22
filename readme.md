@@ -15,7 +15,7 @@ Anomaly Detector is a Flask-based application designed to detect anomalies in vi
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/AnomalyDetector.git
+    git clone https://github.com/olawalejuwonm/AnomalyDetector.git
     cd AnomalyDetector
     ```
 
