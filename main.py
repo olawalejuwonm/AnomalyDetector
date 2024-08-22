@@ -59,7 +59,9 @@ def send_telegram_message(bot_token, chat_id, message):
     try:
         send_message_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"  # URL for sending messages
         payload = {"chat_id": chat_id, "text": message}  # Payload for the POST request
-        response = requests.post(send_message_url, data=payload)  # Send the POST request
+        response = requests.post(
+            send_message_url, data=payload
+        )  # Send the POST request
         return response.json()  # Return the response as JSON
     except Exception as e:
         print(f"An error occurred sending notification: {e}")
@@ -106,6 +108,8 @@ if not os.path.exists(video_directory):
 fourcc = cv2.VideoWriter_fourcc(*"VP90")  # Define the codec for WebM format
 out = None  # Initialize the VideoWriter object
 metadata = {}  # Initialize metadata dictionary
+frame_count = 0  # Initialize frame counter
+frame_rate = 20.0  # Frame rate of the video
 
 
 def start_new_recording():
@@ -118,7 +122,7 @@ def start_new_recording():
     return cv2.VideoWriter(
         os.path.join(video_directory, output_file),
         fourcc,
-        20.0,
+        frame_rate,
         (int(camera.get(3)), int(camera.get(4))),
     )  # Create VideoWriter object
 
@@ -138,6 +142,7 @@ while True:
             is_recording = True  # Start recording
             start_time = datetime.datetime.now()  # Record the start time
             out = start_new_recording()  # Start a new recording with a new timestamp
+            frame_count = 0  # Reset frame counter
             class_ids = detected_objects.class_id  # Get class IDs of detected objects
             object_names = [
                 model.names[class_id] for class_id in class_ids
@@ -193,9 +198,9 @@ while True:
                 target=release_video,
                 args=(out, metadata, start_time, record_duration, video_directory),
             ).start()
-
     if is_recording:
-        elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
+        elapsed_time = frame_count / frame_rate  # Calculate elapsed time
+        print(f"Elapsed Time: {elapsed_time}s")  # Print elapsed time
         if elapsed_time >= record_duration:
             is_recording = False  # Stop recording
             # Use a separate thread to release the video and write metadata
@@ -205,6 +210,7 @@ while True:
             ).start()
         else:
             out.write(processed_frame)  # Write the processed frame to the output file
+            frame_count += 1  # Increment frame counter
 
     cv2.imshow(
         "Surveillance System (Press Q to Quit)", processed_frame

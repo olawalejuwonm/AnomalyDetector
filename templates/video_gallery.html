@@ -80,7 +80,7 @@
 
     {% for video in videos %} <!-- Loop through each video in the videos list -->
     <div class="video-container">
-        <video id="video{{ loop.index }}"> <!-- Video element with a unique ID -->
+        <video id="video{{ loop.index }}" controls> <!-- Video element with a unique ID -->
             <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}" type="video/webm">
             <!-- Video source -->
             Your browser does not support the video tag.
