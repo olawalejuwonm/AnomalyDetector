@@ -8,6 +8,7 @@ import os  # Import os module for interacting with the operating system
 import json  # Import json module for handling JSON data
 import sys  # Import sys module to get the path to the current Python interpreter
 import subprocess  # Import subprocess module for running external scripts
+import threading  # Import threading module to handle concurrent execution
 
 app = Flask(__name__)  # Create a Flask application instance
 
@@ -87,16 +88,32 @@ def delete_video():
         )  # Return error if the video file is not found
 
 
+# Global variable to track if the script is running
+is_running = False
+lock = threading.Lock()  # Lock to ensure thread-safe access to the is_running variable
+
+
 @app.route("/run-main", methods=["POST"])  # Define route to run main.py
 def run_main():
+    global is_running
+    with lock:
+        if is_running:
+            return jsonify(
+                {"error": "The surveillance system is already running."}
+            )  # Return error if script is already running
+        is_running = True
+
     try:
         # Use the same Python interpreter that is running the Flask application
         result = subprocess.run(
             [sys.executable, "main.py"], capture_output=True, text=True
         )
-        return jsonify({"output": result.stdout})  # Return the output and error as JSON
+        return jsonify({"output": result.stdout})  # Return the output as JSON
     except Exception as e:
         return jsonify({"error": str(e)})  # Return any exception as JSON
+    finally:
+        with lock:
+            is_running = False  # Reset the running state
 
 
 if __name__ == "__main__":  # Check if the script is run directly
