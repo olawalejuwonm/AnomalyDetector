@@ -2,10 +2,11 @@
 <html lang="en"> <!-- Specifies the language of the document -->
 
 <head>
-    <meta charset="UTF-8"> <!-- Specifies the character encoding for the HTML document -->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Sets the viewport to make the website responsive -->
-    <title>Surveillance System</title> <!-- Title of the webpage -->
+    <title>Video Gallery</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Inline CSS for styling the video gallery */
         .video-container {
@@ -92,33 +93,39 @@
             <h3>Metadata</h3> <!-- Metadata heading -->
             <p><strong>File Name:</strong> {{ video.file_name }}</p> <!-- Display file name -->
             {% if video.metadata %} <!-- Check if metadata exists -->
-            <p><strong>Start Time:</strong> {{ video.metadata.start_time }}</p> <!-- Display start time -->
-            <p><strong>End Time:</strong> {{ video.metadata.end_time }}</p> <!-- Display end time -->
-            <p><strong>Total Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
-            <!-- Display total duration -->
-            <h4>Detections:</h4> <!-- Detections heading -->
-            <ul>
-                {% for tracker_id, detection in video.metadata.detections.items() %}
-                <!-- Loop through each detection -->
-                <li>
-                    <strong>Object Identifier:</strong> {{ tracker_id }}<br> <!-- Display object identifier -->
-                    <strong>Name:</strong> {{ detection.class_name }}<br> <!-- Display class name -->
-                    <strong>Positions:</strong>
-                    <ul>
-                        {% for position in detection.positions %} <!-- Loop through each position -->
-                        <li>
-                            <strong>Timestamp:</strong> {{ position.timestamp }}<br> <!-- Display timestamp -->
-                            <strong>Bounding Box:</strong> {{ position.bbox }}<br> <!-- Display bounding box -->
-                            <strong>Movement Direction:</strong> {{ position.movement_direction }}
-                            <!-- Display movement direction -->
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                {% endfor %}
-            </ul>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#metadataCollapse"
+                aria-expanded="false" aria-controls="metadataCollapse">
+                Toggle Metadata
+            </button>
+            <div class="collapse" id="metadataCollapse">
+                <p><strong>Start Time:</strong> {{ video.metadata.start_time }}</p> <!-- Display start time -->
+                <p><strong>End Time:</strong> {{ video.metadata.end_time }}</p> <!-- Display end time -->
+                <p><strong>Total Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
+                <!-- Display total duration -->
+                <h4>Detections:</h4> <!-- Detections heading -->
+                <ul>
+                    {% for tracker_id, detection in video.metadata.detections.items() %}
+                    <!-- Loop through each detection -->
+                    <li>
+                        <strong>Object Identifier:</strong> {{ tracker_id }}<br> <!-- Display object identifier -->
+                        <strong>Name:</strong> {{ detection.class_name }}<br> <!-- Display class name -->
+                        <strong>Positions:</strong>
+                        <ul>
+                            {% for position in detection.positions %} <!-- Loop through each position -->
+                            <li>
+                                <strong>Timestamp:</strong> {{ position.timestamp }}<br> <!-- Display timestamp -->
+                                <strong>Bounding Box:</strong> {{ position.bbox }}<br> <!-- Display bounding box -->
+                                <strong>Movement Direction:</strong> {{ position.movement_direction }}
+                                <!-- Display movement direction -->
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
             {% else %}
-            <p>No metadata available.</p> <!-- Display message if no metadata is available -->
+            <p>No metadata available.</p>
             {% endif %}
         </div>
     </div>
@@ -211,6 +218,10 @@
             }
         }
     </script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
