@@ -5,3 +5,4 @@ yolov3.pt
 static/recorded_videos/*
 !static/recorded_videos/.gitkeep
 __pycache__
+venv
