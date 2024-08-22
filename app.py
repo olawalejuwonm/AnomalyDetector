@@ -12,6 +12,9 @@ import threading  # Import threading module to handle concurrent execution
 
 app = Flask(__name__)  # Create a Flask application instance
 
+# Enable template auto-reloading
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 
 @app.route("/")  # Define route for the root URL
 def video_gallery():
