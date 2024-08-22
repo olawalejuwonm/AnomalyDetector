@@ -43,7 +43,7 @@ Anomaly Detector is a Flask-based application designed to detect anomalies in vi
 ## API Endpoints
 
 
-- `POST /run-main`: Runs the [`main.py`]("main.py") script.
+- `POST /run-main`: Runs the [`main.py`] script.
 
 ## Configuration
 
