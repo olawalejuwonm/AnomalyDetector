@@ -40,7 +40,8 @@ def video_gallery():
             video_metadata.append(
                 {"file_name": video_file, "metadata": None}
             )  # Append the video file with no metadata
-
+    # reverse operation on the video_metadata list to display the most recent videos first
+    video_metadata = video_metadata[::-1]
     return render_template(
         "video_gallery.html", videos=video_metadata
     )  # Render the video gallery template with the video metadata
