@@ -15,7 +15,7 @@
   },
   {
    "optionDest": "console",
-   "value": true
+   "value": false
   },
   {
    "optionDest": "name",
@@ -71,7 +71,7 @@
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/static;static/"
+   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/static/recorded_videos/.gitkeep;."
   }
  ],
  "nonPyinstallerOptions": {
