@@ -1,35 +1,38 @@
-from flask import (
-    Flask,
-    render_template,
-    jsonify,
-    request,
-)  # Import necessary Flask modules
 import os  # Import os module for interacting with the operating system
 import json  # Import json module for handling JSON data
 import sys  # Import sys module to get the path to the current Python interpreter
 import subprocess  # Import subprocess module for running external scripts
 import threading  # Import threading module to handle concurrent execution
 from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
+from flask import (
+    Flask,
+    render_template,
+    jsonify,
+    request,
+)  # Import necessary Flask modules
 
 app = Flask(__name__)  # Create a Flask application instance
 
 # Enable template auto-reloading
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-# video_directory = "static/recorded_videos"  # Directory path for recorded videos
 
-# if not os.path.exists(video_directory):
-#     os.makedirs(video_directory)  # Create the directory if it doesn't exist
+def get_video_files():
+    video_directory = os.path.join(
+        app.static_folder, "recorded_videos"
+    )  # Define the path to the video directory
+    if not os.path.exists(video_directory):
+        os.makedirs(video_directory)  # Create the directory if it doesn't exist
+
+    video_files = [
+        f for f in os.listdir(video_directory) if f.endswith(".webm")
+    ]  # List all .webm files in the directory
+    return video_directory, video_files  # Return the video directory and files
 
 
 @app.route("/")  # Define route for the root URL
 def video_gallery():
-    video_directory = os.path.join(
-        app.static_folder, "recorded_videos"
-    )  # Define the path to the video directory
-    video_files = [
-        f for f in os.listdir(video_directory) if f.endswith(".webm")
-    ]  # List all .webm files in the directory
+    video_directory, video_files = get_video_files()  # Get the list of video files
 
     video_metadata = []  # Initialize an empty list to store video metadata
     for video_file in video_files:  # Iterate over each video file
@@ -37,7 +40,9 @@ def video_gallery():
             video_directory, f"{video_file}.json"
         )  # Define the path to the metadata file
         if os.path.exists(metadata_file):  # Check if the metadata file exists
-            with open(metadata_file, "r") as f:  # Open the metadata file
+            with open(
+                metadata_file, "r", encoding="utf-8"
+            ) as f:  # Open the metadata file with UTF-8 encoding
                 metadata = json.load(f)  # Load the metadata from the file
             video_metadata.append(
                 {"file_name": video_file, "metadata": metadata}
@@ -55,12 +60,7 @@ def video_gallery():
 
 @app.route("/check-videos")  # Define route for checking available videos
 def check_videos():
-    video_directory = os.path.join(
-        app.static_folder, "recorded_videos"
-    )  # Define the path to the video directory
-    video_files = [
-        f for f in os.listdir(video_directory) if f.endswith(".webm")
-    ]  # List all .webm files in the directory
+    _, video_files = get_video_files()  # Get the list of video files
     return jsonify(video_files)  # Return the list of video files as JSON
 
 
@@ -116,7 +116,10 @@ def run_main():
     try:
         # Use the same Python interpreter that is running the Flask application
         result = subprocess.run(
-            [sys.executable, "main.py"], capture_output=True, text=True
+            [sys.executable, "python .\\main.py"],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         print(result.stdout)  # Print the output of the script
         print("Error:", result.stderr)  # Print any errors from the script
@@ -131,13 +134,13 @@ def run_main():
 # Used code from https://pypi.org/project/flaskwebgui/ (Advanced Usage)
 def start_flask(**server_kwargs):
 
-    app = server_kwargs.pop("app", None)
+    flask_app = server_kwargs.pop("app", None)
     server_kwargs.pop("debug", None)
 
     try:
         import waitress
 
-        waitress.serve(app, **server_kwargs)
+        waitress.serve(flask_app, **server_kwargs)
     except Exception as e:
         print(f"Error occurred: {e}")
         app.run(**server_kwargs)
@@ -162,4 +165,3 @@ if __name__ == "__main__":  # Check if the script is run directly
     ).run()
 
     # FlaskUI(app=app, server="flask").run()
-

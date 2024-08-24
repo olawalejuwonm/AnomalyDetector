@@ -1,12 +1,12 @@
+import os  # Import the os module for interacting with the operating system
+import datetime  # Import the datetime module for date and time operations
+import json  # Import the json module for handling JSON data
+import threading  # to handle concurrent execution
 import cv2  # Import the OpenCV library for computer vision tasks
 import numpy as np  # Import the NumPy library for numerical operations
 import supervision as sv  # Import the supervision library for tracking and annotation
 from ultralytics import YOLO  # Import the YOLO model from the ultralytics library
 import requests  # Import the requests library for making HTTP requests
-import os  # Import the os module for interacting with the operating system
-import datetime  # Import the datetime module for date and time operations
-import json  # Import the json module for handling JSON data
-import threading  # to handle concurrent execution
 from dotenv import load_dotenv  # for enviromental variables
 
 # Load environment variables from .env file
