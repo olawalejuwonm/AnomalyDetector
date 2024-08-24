@@ -16,6 +16,11 @@ app = Flask(__name__)  # Create a Flask application instance
 # Enable template auto-reloading
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
+video_directory = "static/recorded_videos"  # Directory path for recorded videos
+
+if not os.path.exists(video_directory):
+    os.makedirs(video_directory)  # Create the directory if it doesn't exist
+
 
 @app.route("/")  # Define route for the root URL
 def video_gallery():
