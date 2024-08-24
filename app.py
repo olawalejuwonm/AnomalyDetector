@@ -16,6 +16,11 @@ app = Flask(__name__)  # Create a Flask application instance
 # Enable template auto-reloading
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
+# video_directory = "static/recorded_videos"  # Directory path for recorded videos
+
+# if not os.path.exists(video_directory):
+#     os.makedirs(video_directory)  # Create the directory if it doesn't exist
+
 
 @app.route("/")  # Define route for the root URL
 def video_gallery():
@@ -113,6 +118,8 @@ def run_main():
         result = subprocess.run(
             [sys.executable, "main.py"], capture_output=True, text=True
         )
+        print(result.stdout)  # Print the output of the script
+        print("Error:", result.stderr)  # Print any errors from the script
         return jsonify({"output": result.stdout})  # Return the output as JSON
     except Exception as e:
         return jsonify({"error": str(e)})  # Return any exception as JSON
@@ -153,3 +160,6 @@ if __name__ == "__main__":  # Check if the script is run directly
         width=800,
         height=600,
     ).run()
+
+    # FlaskUI(app=app, server="flask").run()
+
