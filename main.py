@@ -82,9 +82,7 @@ def write_metadata_to_file(metadata, start_time, record_duration, video_director
     - video_directory (str): The directory where the video and metadata files are stored.
     """
     metadata["end_time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    metadata["total_duration"] = min(
-        (datetime.datetime.now() - start_time).total_seconds(), record_duration
-    )
+    metadata["total_duration"] = min((frame_count / frame_rate), record_duration)
     metadata_file = os.path.join(video_directory, f'{metadata["file_name"]}.json')
     with open(metadata_file, "w") as f:
         json.dump(metadata, f, indent=4)
@@ -103,7 +101,11 @@ chat_id = os.getenv("TELEGRAM_CHAT_ID")  # Telegram chat ID
 
 # Ensure the environment variables are set
 if not bot_token or not chat_id:
-    print(ValueError("Please set the TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID environment variables."))
+    print(
+        ValueError(
+            "Please set the TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID environment variables."
+        )
+    )
 
 camera = cv2.VideoCapture(0)  # Open the default camera
 is_recording = False  # Initialize recording state
@@ -158,7 +160,7 @@ while True:
                 model.names[class_id] for class_id in class_ids
             ]  # Get names of detected objects
             object_count = len(object_names)  # Count the number of detected objects
-            message = f"The Surveillance System has detected {object_count} an object and started recording. Object detected: {', '.join(object_names)}. "  # Create message
+            message = f"The Surveillance System has detected {object_count} object(s) and started recording. Object detected: {', '.join(object_names)}. "  # Create message
             send_telegram_message(bot_token, chat_id, message)  # Send the message
         # Update metadata with detected objects
         for class_id, tracker_id, bbox in zip(

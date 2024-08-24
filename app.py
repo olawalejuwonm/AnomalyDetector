@@ -9,6 +9,7 @@ import json  # Import json module for handling JSON data
 import sys  # Import sys module to get the path to the current Python interpreter
 import subprocess  # Import subprocess module for running external scripts
 import threading  # Import threading module to handle concurrent execution
+from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
 
 app = Flask(__name__)  # Create a Flask application instance
 
@@ -120,7 +121,35 @@ def run_main():
             is_running = False  # Reset the running state
 
 
+# Used code from https://pypi.org/project/flaskwebgui/ (Advanced Usage)
+def start_flask(**server_kwargs):
+
+    app = server_kwargs.pop("app", None)
+    server_kwargs.pop("debug", None)
+
+    try:
+        import waitress
+
+        waitress.serve(app, **server_kwargs)
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        app.run(**server_kwargs)
+
+
 if __name__ == "__main__":  # Check if the script is run directly
-    app.run(
-        host="0.0.0.0", debug=True
-    )  # Run the Flask application with debugging enabled
+    # Uncomment for development
+    # app.run(
+    #     host="0.0.0.0", debug=True
+    # )  # Run the Flask application on the local network
+
+    FlaskUI(
+        server=start_flask,
+        server_kwargs={
+            "app": app,
+            "port": 5000,
+            "host": "0.0.0.0",
+            # "threaded": True,
+        },
+        width=800,
+        height=600,
+    ).run()
