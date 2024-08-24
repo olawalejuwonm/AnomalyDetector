@@ -7,6 +7,10 @@ import os  # Import the os module for interacting with the operating system
 import datetime  # Import the datetime module for date and time operations
 import json  # Import the json module for handling JSON data
 import threading  # to handle concurrent execution
+from dotenv import load_dotenv  # for enviromental variables
+
+# Load environment variables from .env file
+load_dotenv()
 
 model = YOLO("yolov8n.pt")  # Load the YOLO model with the specified weights
 tracker = sv.ByteTrack()  # Initialize the ByteTrack tracker
@@ -93,8 +97,14 @@ def release_video(out, metadata, start_time, record_duration, video_directory):
     )  # Write metadata to a file
 
 
-bot_token = "7063368407:AAHFXUgXDZBw4LkC4q-jLkBNgwJxQ2qw4yw"  # Telegram bot token
-chat_id = "-1002043489442"  # Telegram chat ID
+# Read the bot token and chat ID from environment variables
+bot_token = os.getenv("TELEGRAM_BOT_TOKEN")  # Telegram bot token
+chat_id = os.getenv("TELEGRAM_CHAT_ID")  # Telegram chat ID
+
+# Ensure the environment variables are set
+if not bot_token or not chat_id:
+    print(ValueError("Please set the TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID environment variables."))
+
 camera = cv2.VideoCapture(0)  # Open the default camera
 is_recording = False  # Initialize recording state
 start_time = 0  # Initialize start time
