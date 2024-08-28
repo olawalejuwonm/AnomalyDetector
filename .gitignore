@@ -7,3 +7,7 @@ static/recorded_videos/*
 __pycache__
 venv
 output
+
+cdnet/office/input
+cdnet
+coco8
