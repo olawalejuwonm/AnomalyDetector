@@ -17,14 +17,22 @@ app = Flask(__name__)  # Create a Flask application instance
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
-@app.route("/")  # Define route for the root URL
-def video_gallery():
+def get_video_files():
     video_directory = os.path.join(
         app.static_folder, "recorded_videos"
     )  # Define the path to the video directory
+    if not os.path.exists(video_directory):
+        os.makedirs(video_directory)  # Create the directory if it doesn't exist
+
     video_files = [
         f for f in os.listdir(video_directory) if f.endswith(".webm")
     ]  # List all .webm files in the directory
+    return video_directory, video_files  # Return the video directory and files
+
+
+@app.route("/")  # Define route for the root URL
+def video_gallery():
+    video_directory, video_files = get_video_files()  # Get the list of video files
 
     video_metadata = []  # Initialize an empty list to store video metadata
     for video_file in video_files:  # Iterate over each video file
@@ -50,12 +58,8 @@ def video_gallery():
 
 @app.route("/check-videos")  # Define route for checking available videos
 def check_videos():
-    video_directory = os.path.join(
-        app.static_folder, "recorded_videos"
-    )  # Define the path to the video directory
-    video_files = [
-        f for f in os.listdir(video_directory) if f.endswith(".webm")
-    ]  # List all .webm files in the directory
+    _, video_files = get_video_files()  # Get the list of video files
+
     return jsonify(video_files)  # Return the list of video files as JSON
 
 
@@ -113,6 +117,8 @@ def run_main():
         result = subprocess.run(
             [sys.executable, "main.py"], capture_output=True, text=True
         )
+        print(result.stdout)  # Print the output of the script
+        print("Error:", result.stderr)  # Print any errors from the script
         return jsonify({"output": result.stdout})  # Return the output as JSON
     except Exception as e:
         return jsonify({"error": str(e)})  # Return any exception as JSON
