@@ -66,8 +66,39 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [Flask](https://flask.palletsprojects.com/) for the web framework
 
 
+# Initialize the frame count for the last detected movement
+last_movement_frame_count = 0
+
+        if "detections" in metadata and any(
+            metadata["detections"].get(int(tracker_id), {}).get("previous_position")
+            is not None
+            and metadata["detections"][int(tracker_id)]["previous_position"]
+            != bbox.tolist()
+            for tracker_id, bbox in zip(
+                detected_objects.tracker_id, detected_objects.xyxy
+            )
+        ):
+            last_movement_frame_count = frame_count
 
 
+        else:
+            if is_recording:
+                elapsed_time_since_movement = (
+                    frame_count - last_movement_frame_count
+                ) / frame_rate
+                if elapsed_time_since_movement >= 3:
+                    is_recording = False  # Stop recording
+                    # Use a separate thread to release the video and write metadata
+                    threading.Thread(
+                        target=release_video,
+                        args=(
+                            out,
+                            metadata,
+                            start_time,
+                            record_duration,
+                            video_directory,
+                        ),
+                    ).start()
 
 
 
