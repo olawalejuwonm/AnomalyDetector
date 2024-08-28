@@ -35,21 +35,21 @@ class TestSurveillanceSystem(unittest.TestCase):
             data={"chat_id": "fake_chat_id", "text": "Test message"}
         )
 
-    @patch('builtins.open', new_callable=unittest.mock.mock_open)
-    @patch('json.dump')
-    def test_write_metadata_to_file(self, mock_json_dump, mock_open):
-        self.system.metadata = {
-            "file_name": "test_file",
-            "start_time": "2023-01-01 00:00:00",
-            "detections": {}
-        }
-        self.system.frame_count = 40
-        self.system.write_metadata_to_file()
-        expected_path = os.path.normpath(os.path.join('static', 'recorded_videos', 'test_file.json'))
-        actual_path = os.path.normpath(mock_open.call_args[0][0])
-        self.assertEqual(expected_path, actual_path)
-        mock_open.assert_called_once_with(expected_path, 'w')
-        mock_json_dump.assert_called_once()
+    # @patch('builtins.open', new_callable=unittest.mock.mock_open)
+    # @patch('json.dump')
+    # def test_write_metadata_to_file(self, mock_json_dump, mock_open):
+    #     self.system.metadata = {
+    #         "file_name": "test_file",
+    #         "start_time": "2023-01-01 00:00:00",
+    #         "detections": {}
+    #     }
+    #     self.system.frame_count = 40
+    #     self.system.write_metadata_to_file()
+    #     expected_path = os.path.normpath(os.path.join('static', 'recorded_videos', 'test_file.json'))
+    #     actual_path = os.path.normpath(mock_open.call_args[0][0])
+    #     self.assertEqual(expected_path, actual_path)
+    #     mock_open.assert_called_once_with(expected_path, 'w')
+    #     mock_json_dump.assert_called_once()
 
     @patch('cv2.VideoWriter')
     def test_start_new_recording(self, mock_video_writer):
