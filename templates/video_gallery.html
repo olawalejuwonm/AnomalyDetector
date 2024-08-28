@@ -1,227 +1,569 @@
 <!DOCTYPE html>
 <html lang="en"> <!-- Specifies the language of the document -->
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Gallery</title>
+    <title>Surveillance System</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Inline CSS for styling the video gallery */
-        .video-container {
-            position: relative;
-            /* Position relative for absolute positioning of play button */
-            margin-bottom: 20px;
-            /* Margin below each video container */
+        body {
+            background-color: #EFF1FE;
+            padding: 30px 30px;
         }
 
-        .play-button {
-            cursor: pointer;
-            /* Cursor changes to pointer on hover */
-            padding: 10px 20px;
-            /* Padding inside the play button */
-            background-color: rgba(0, 0, 0, 0.7);
-            /* Semi-transparent background color */
-            color: white;
-            /* Text color */
-            font-size: 20px;
-            /* Font size */
-            border: none;
-            /* No border */
-            border-radius: 5px;
-            /* Rounded corners */
-            text-align: center;
-            /* Center text */
-            margin-top: 10px;
-            /* Margin above the play button */
+
+        .section-one {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
         }
+
+
+        .welcome {
+            width: 100%;
+            background-color: #6264D5;
+            display: flex;
+            align-items: center;
+            padding: 30px 0px 20px 40px;
+            border-radius: 20px;
+            flex: 1 1 100%;
+        }
+
+
+        .title {
+            position: relative;
+            font-size: 30px;
+            font-weight: bolder;
+            color: white;
+            font-family: 'Raleway', sans-serif;
+        }
+
+
+        .desc {
+            font-size: 20px;
+            color: white;
+            font-family: 'Raleway', sans-serif;
+        }
+
+
+        .dashimage {
+            width: 300px;
+            height: 300px;
+        }
+
+
+        .calendar {
+            width: 320px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            width: 100%;
+            flex: 1 1 100%;
+            margin-top: 10px;
+        }
+
+
+        .calendar-header {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+
+        .month-year {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+
+        .weekdays {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+
+        .weekdays span {
+            font-weight: bold;
+            color: #666;
+            width: 14.28%;
+            text-align: center;
+        }
+
+
+        .days {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+
+        .days span {
+            width: 14.28%;
+            text-align: center;
+            padding: 10px 0;
+            border-radius: 50%;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+
+        .days .today {
+            background-color: #637cff;
+            color: white;
+            border-radius: 50%;
+        }
+
+
+        .section-two {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+
+        .section-two-left {
+            width: 100%;
+        }
+
+
+        .section-two-right {
+            margin-top: 50px;
+            width: 30%;
+            flex: 1 1 100%;
+        }
+
+
+        .container {
+            width: 100%;
+            height: 610px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+
+        .tab {
+            background-color: #E5EAF2;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #555;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .tab:hover {
+            background-color: #D4DBE4;
+        }
+
+
+        .content {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .no-videos {
+            font-size: 24px;
+            color: #ccc;
+            text-align: center;
+        }
+
+
+        .action-button {
+            margin-top: 90px;
+            color: #6264D5;
+            background-color: #fff;
+            padding: 6px 10px;
+            border: none;
+            font-size: medium;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: 10px;
+        }
+
+
+        .video-card {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+
+        .video-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+
+        .video-box {
+            width: 100%;
+            border-radius: 30px;
+        }
+
+
+        .play-button {
+            position: absolute;
+            top: 240px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            padding: 10px 20px;
+            color: white;
+            font-size: 20px;
+            border: none;
+            text-align: center;
+        }
+
 
         .total-videos-card {
             margin-bottom: 20px;
-            /* Margin below the total videos card */
             padding: 10px;
-            /* Padding inside the total videos card */
             background-color: #f0f0f0;
-            /* Background color */
-            border: 1px solid #ccc;
-            /* Border color and style */
-            border-radius: 5px;
-            /* Rounded corners */
+            margin-top: 40px;
         }
 
+
         .delete-button {
-            margin-top: 10px;
-            /* Margin above the delete button */
+            position: absolute;
+            top: 30px;
+            right: 20px;
             padding: 5px 10px;
-            /* Padding inside the delete button */
             background-color: red;
-            /* Background color */
             color: white;
-            /* Text color */
             border: none;
-            /* No border */
-            border-radius: 5px;
-            /* Rounded corners */
+            border-radius: 50px;
             cursor: pointer;
-            /* Cursor changes to pointer on hover */
+        }
+
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .video-card {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .welcome, .calendar, .section-two-right {
+                width: 100%;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+            .video-card {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+
+            .title {
+                font-size: 24px;
+            }
+
+
+            .desc {
+                font-size: 16px;
+            }
+
+
+            .play-button {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+
+        @media (max-width: 576px) {
+            .section-one {
+                padding: 10px;
+                grid-template-columns: 1fr;
+            }
+
+
+            .action-button {
+                margin-top: 30px;
+                padding: 5px 8px;
+                font-size: small;
+            }
+
+
+            .total-videos-card {
+                margin-top: 20px;
+                padding: 8px;
+            }
         }
     </style>
 </head>
 
+
 <body>
-    <h1>Surveillance System </h1> <!-- Heading of the webpage -->
-    <button id="run-surveillance" class="action-button">Start Surveillance System</button>
-
-    <div class="total-videos-card">
-        <h3>Total Videos for Today: <span id="total-videos-count">Loading...</span></h3>
-        <!-- Display total videos count -->
-    </div>
-
-    {% for video in videos %} <!-- Loop through each video in the videos list -->
-    <div class="video-container">
-        <video id="video{{ loop.index }}" controls> <!-- Video element with a unique ID -->
-            <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}" type="video/webm">
-            <!-- Video source -->
-            Your browser does not support the video tag.
-        </video>
-        <button class="delete-button" onclick="deleteVideo('{{ video.file_name }}')">Delete</button>
-        <!-- Delete button -->
-        <div class="play-button" onclick="togglePlayPause('video{{ loop.index }}')">Play/Pause</div>
-        <!-- Play/Pause button -->
-        <div class="metadata-card">
-            <h3>Metadata</h3> <!-- Metadata heading -->
-            <p><strong>File Name:</strong> {{ video.file_name }}</p> <!-- Display file name -->
-            {% if video.metadata %} <!-- Check if metadata exists -->
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#metadataCollapse"
-                aria-expanded="false" aria-controls="metadataCollapse">
-                Toggle Metadata
-            </button>
-            <div class="collapse" id="metadataCollapse">
-                <p><strong>Start Time:</strong> {{ video.metadata.start_time }}</p> <!-- Display start time -->
-                <p><strong>End Time:</strong> {{ video.metadata.end_time }}</p> <!-- Display end time -->
-                <p><strong>Video Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
-                <!-- Display total duration -->
-                <h4>Detections:</h4> <!-- Detections heading -->
-                <ul>
-                    {% for tracker_id, detection in video.metadata.detections.items() %}
-                    <!-- Loop through each detection -->
-                    <li>
-                        <strong>Object Identifier:</strong> {{ tracker_id }}<br> <!-- Display object identifier -->
-                        <strong>Name:</strong> {{ detection.class_name }}<br> <!-- Display class name -->
-                        <strong>Positions:</strong>
-                        <ul>
-                            {% for position in detection.positions %} <!-- Loop through each position -->
-                            <li>
-                                <strong>Timestamp:</strong> {{ position.timestamp }}<br> <!-- Display timestamp -->
-                                <strong>Bounding Box:</strong> {{ position.bbox }}<br> <!-- Display bounding box -->
-                                <strong>Movement Direction:</strong> {{ position.movement_direction }}
-                                <!-- Display movement direction -->
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                    {% endfor %}
-                </ul>
+    <div class="section-one">
+        <div class="welcome">
+            <div>
+                <p class="title">Intelligent Surveillance System</p>
+                <p class="desc">Web Dashboard</p>
+                <button id="run-surveillance" class="action-button">
+                    <span><i class="fa fa-play" aria-hidden="true"></i></span> Start Surveillance System
+                </button>
             </div>
-            {% else %}
-            <p>No metadata available.</p>
-            {% endif %}
+            <div>
+                <img class="dashimage" src="https://res.cloudinary.com/dybryo15k/image/upload/v1724405189/dashimg_da9ukc.png" alt="Description of the image" />
+            </div>
+        </div>
+        <div class="calendar">
+            <div class="calendar-header">
+                <span class="month-year" id="monthYear"></span>
+            </div>
+            <div class="calendar-body">
+                <div class="weekdays">
+                    <span>Su</span>
+                    <span>Mo</span>
+                    <span>Tu</span>
+                    <span>We</span>
+                    <span>Th</span>
+                    <span>Fr</span>
+                    <span>Sa</span>
+                </div>
+                <div class="days" id="days"></div>
+            </div>
         </div>
     </div>
-    {% endfor %}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Set the playback rate for all video elements to 0.1
-            document.querySelectorAll('video').forEach(function (video) {
-                video.playbackRate = 0.1;
-            });
 
-            // Function to fetch the list of videos from the server
-            function fetchVideos() {
-                fetch('/check-videos')
-                    .then(response => response.json())  // Parse the JSON response
-                    .then(data => {
-                        const currentVideos = document.querySelectorAll('video > source').length;  // Get the current number of video sources
-                        if (data.length > currentVideos) {
-                            location.reload();  // Reload the page to update the video list if new videos are found
-                        }
-                        updateTotalVideosCount(data);  // Update the total videos count
-                    })
-                    .catch(error => console.error('Error fetching videos:', error));  // Log any errors
-            }
+    <div class="section-two">
+        <div class="section-two-left">
+            <div class="total-videos-card">
+                <h3>Today total incident footage: <span id="total-videos-count">Loading...</span></h3>
+            </div>
 
-            // Function to update the total videos count for today
-            function updateTotalVideosCount(videos) {
-                const today = new Date().toISOString().split('T')[0];  // Get today's date in YYYY-MM-DD format
-                const totalVideosToday = videos.filter(video => {
-                    const fileNameDate = video.split('_')[1];  // Assuming the date is part of the file name
-                    return fileNameDate === today;  // Check if the video was created today
-                }).length;
-                document.getElementById('total-videos-count').textContent = totalVideosToday;  // Update the total videos count
-            }
 
-            fetchVideos();  // Initial fetch to update the count
-            setInterval(fetchVideos, 5000);  // Check for new videos every 5 seconds
-
-            // Function to run the surveillance system
-            function runSurveillanceSystem() {
-                fetch('/run-main', {
-                    method: 'POST'
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.error) {
-                            alert('Error: ' + data.error);  // Alert error message
-                        } else {
-                            alert('Surveillance system started successfully.');  // Alert success message
-                        }
-                    })
-                    .catch(error => console.error('Error running surveillance system:', error));  // Log any errors
-            }
-
-            // Add event listener to the run surveillance button
-            document.getElementById('run-surveillance').addEventListener('click', runSurveillanceSystem);
-        });
-
-        // Function to toggle play/pause for a video
-        function togglePlayPause(videoId) {
-            var video = document.getElementById(videoId);  // Get the video element by ID
-            if (video.paused) {
-                video.play();  // Play the video if it is paused
-            } else {
-                video.pause();  // Pause the video if it is playing
-            }
-        }
-
-        // Function to delete a video
-        function deleteVideo(fileName) {
-            if (confirm('Are you sure you want to delete this video?')) {  // Confirm deletion
-                fetch('/delete-video', {
-                    method: 'POST',  // Send a POST request to delete the video
-                    headers: {
-                        'Content-Type': 'application/json'  // Set the content type to JSON
-                    },
-                    body: JSON.stringify({ file_name: fileName })  // Send the video file name in the request body
-                })
-                    .then(response => response.json())  // Parse the JSON response
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.success);  // Alert success message
-                            location.reload();  // Reload the page to update the video list
-                        } else {
-                            alert(data.error);  // Alert error message
-                        }
-                    })
-                    .catch(error => console.error('Error deleting video:', error));  // Log any errors
-            }
-        }
-    </script>
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <div class="video-card">
+                {% for video in videos %}
+                <div class="video-container">
+                    <video class="video-box" id="video{{ loop.index }}" controls>
+                        <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}" type="video/webm">
+                        Your browser does not support the video tag.
+                    </video>
+                    <button class="delete-button" onclick="deleteVideo('{{ video.file_name }}')">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                    <div class="metadata-card">
+                        <h3>Metadata</h3>
+                        <p><strong>File Name:</strong> {{ video.file_name }}</p>
+                        {% if video.metadata %}
+                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#metadataCollapse{{ loop.index }}" aria-expanded="false" aria-controls="metadataCollapse{{ loop.index }}">
+                            Toggle Metadata
+                        </button>
+                        <div class="collapse" id="metadataCollapse{{ loop.index }}">
+                            <p><strong>Start Time:</strong> {{ video.metadata.start_time }}</p>
+                            <p><strong>End Time:</strong> {{ video.metadata.end_time }}</p>
+                            <p><strong>Total Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
+                            <h4>Detections:</h4>
+                            <ul>
+                                {% for tracker_id, detection in video.metadata.detections.items() %}
+                                <li>
+                                    <strong>Object Identifier:</strong> {{ tracker_id }}<br>
+                                    <strong>Name:</strong> {{ detection.class_name }}<br>
+                                    <strong>Positions:</strong>
+                                    <ul>
+                                        {% for position in detection.positions %}
+                                        <li>
+                                            <strong>Timestamp:</strong> {{ position.timestamp }}<br>
+                                            <strong>Bounding Box:</strong> {{ position.bbox }}<br>
+                                            <strong>Movement Direction:</strong> {{ position.movement_direction }}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% else %}
+                        <p>No metadata available.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </body>
 
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set the playback rate for all video elements to 0.1
+        document.querySelectorAll('video').forEach(function (video) {
+            video.playbackRate = 0.1;
+        });
+
+
+        // Function to fetch the list of videos from the server
+        function fetchVideos() {
+            fetch('/check-videos')
+                .then(response => response.json())
+                .then(data => {
+                    const currentVideos = document.querySelectorAll('video > source').length;
+                    if (data.length > currentVideos) {
+                        location.reload();
+                    }
+                    updateTotalVideosCount(data);
+                })
+                .catch(error => console.error('Error fetching videos:', error));
+        }
+
+
+        // Function to update the total videos count for today
+        function updateTotalVideosCount(videos) {
+            const today = new Date().toISOString().split('T')[0];
+            const totalVideosToday = videos.filter(video => {
+                const fileNameDate = video.split('_')[1];
+                return fileNameDate === today;
+            }).length;
+            document.getElementById('total-videos-count').textContent = totalVideosToday;
+        }
+
+
+        fetchVideos();
+        setInterval(fetchVideos, 5000);
+
+
+        // Function to run the surveillance system
+        function runSurveillanceSystem() {
+            fetch('/run-main', {
+                method: 'POST'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                    } else {
+                        alert('Surveillance system started successfully.');
+                    }
+                })
+                .catch(error => console.error('Error running surveillance system:', error));
+        }
+
+
+        // Add event listener to the run surveillance button
+        document.getElementById('run-surveillance').addEventListener('click', runSurveillanceSystem);
+    });
+
+
+    // Function to toggle play/pause for a video
+    function togglePlayPause(videoId) {
+        var video = document.getElementById(videoId);
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    }
+
+
+    // Function to delete a video
+    function deleteVideo(fileName) {
+        if (confirm('Are you sure you want to delete this video?')) {
+            fetch('/delete-video', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ file_name: fileName })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.success);
+                        location.reload();
+                    } else {
+                        alert(data.error);
+                    }
+                })
+                .catch(error => console.error('Error deleting video:', error));
+        }
+    }
+
+
+    // Calendar Script
+    const currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+    let currentDay = currentDate.getDate();
+
+
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+
+    function renderCalendar(month, year) {
+        const daysElement = document.getElementById('days');
+        const monthYearElement = document.getElementById('monthYear');
+
+
+        daysElement.innerHTML = "";
+        monthYearElement.textContent = `${monthNames[month]} ${year}`;
+
+
+        const firstDayIndex = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+
+        for (let i = 0; i < firstDayIndex; i++) {
+            daysElement.innerHTML += `<span></span>`;
+        }
+
+
+        for (let i = 1; i <= daysInMonth; i++) {
+            if (i === currentDay && month === currentMonth && year === currentYear) {
+                daysElement.innerHTML += `<span class="today">${i}</span>`;
+            } else {
+                daysElement.innerHTML += `<span>${i}</span>`;
+            }
+        }
+    }
+
+
+    renderCalendar(currentMonth, currentYear);
+</script>
 </html>
+
+
+
+
+

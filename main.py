@@ -148,7 +148,6 @@ while True:
     detected_objects, processed_frame = callback(
         frame
     )  # Process the frame using the callback function
-
     if len(detected_objects) > 0:
         if not is_recording:
             is_recording = True  # Start recording
@@ -160,7 +159,10 @@ while True:
                 model.names[class_id] for class_id in class_ids
             ]  # Get names of detected objects
             object_count = len(object_names)  # Count the number of detected objects
-            message = f"The Surveillance System has detected {object_count} object(s) and started recording. Object detected: {', '.join(object_names)}. "  # Create message
+            object_word = (
+                "object" if object_count < 2 else "objects"
+            )  # Singular or plural
+            message = f"The Surveillance System has detected {object_count} {object_word} and started recording. {object_word} detected: {', '.join(object_names)}. "  # Create message
             send_telegram_message(bot_token, chat_id, message)  # Send the message
         # Update metadata with detected objects
         for class_id, tracker_id, bbox in zip(
