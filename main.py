@@ -148,14 +148,7 @@ while True:
     detected_objects, processed_frame = callback(
         frame
     )  # Process the frame using the callback function
-    if len(detected_objects) > 0 and any(
-        metadata["detections"].get(int(tracker_id), {}).get("previous_position")
-        is not None
-        and metadata["detections"][int(tracker_id)]["previous_position"]
-        != bbox.tolist()
-        for tracker_id, bbox in zip(detected_objects.tracker_id, detected_objects.xyxy)
-    ):
-        # if len(detected_objects) > 0:
+    if len(detected_objects) > 0:
         if not is_recording:
             is_recording = True  # Start recording
             start_time = datetime.datetime.now()  # Record the start time
