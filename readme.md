@@ -1,3 +1,5 @@
+https://github.com/olawalejuwonm/AnomalyDetector?tab=readme-ov-file#how-to-obtain-telegram-bot-token-and-chat-id
+
 # Anomaly Detector
 
 ## Overview

@@ -9,7 +9,9 @@ import json  # Import json module for handling JSON data
 import threading  # Import threading module to handle concurrent execution
 from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
 from dotenv import load_dotenv  # for enviromental variables
-from main import SurveillanceSystem  # Import the SurveillanceSystem class from mainmodule.py
+from main import (
+    SurveillanceSystem,
+)  # Import the SurveillanceSystem class from mainmodule.py
 
 
 # Load environment variables from .env file
@@ -32,9 +34,7 @@ def get_video_files():
         f
         for f in os.listdir(video_directory)
         if f.endswith(".webm")
-        and os.path.exists(
-            os.path.join(video_directory, f"{f}.json")
-        )
+        and os.path.exists(os.path.join(video_directory, f"{f}.json"))
     ]
     return video_directory, video_files  # Return the video directory and files
 
@@ -122,8 +122,13 @@ def run_main():
         is_running = True
 
     try:
+        # Get telegramToken and groupId from the request body
+        data = request.get_json()
+        telegram_token = data.get("telegramToken")
+        group_id = data.get("groupId")
+
         # Create an instance of the SurveillanceSystem class
-        system = SurveillanceSystem()
+        system = SurveillanceSystem(bot_token=telegram_token, chat_id=group_id)
 
         # Function to run the surveillance system and capture output
         def run_system():
@@ -136,7 +141,9 @@ def run_main():
         thread = threading.Thread(target=run_system)
         thread.start()
 
-        return jsonify({"output": "Surveillance system started successfully."})  # Return success message
+        return jsonify(
+            {"output": "Surveillance system started successfully."}
+        )  # Return success message
     except Exception as e:
         return jsonify({"error": str(e)})  # Return any exception as JSON
     finally:
@@ -163,7 +170,7 @@ if __name__ == "__main__":  # Check if the script is run directly
 
     if os.getenv("ENVIRONMENT") != "production":
         app.run(
-        host="0.0.0.0", debug=True, port=5000
+            host="0.0.0.0", debug=True, port=5000
         )  # Run the Flask application on the local network
     else:
         FlaskUI(

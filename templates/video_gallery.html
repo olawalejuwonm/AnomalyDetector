@@ -264,6 +264,42 @@
             cursor: pointer;
         }
 
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
 
         /* Responsive Styles */
         @media (max-width: 992px) {
@@ -272,7 +308,9 @@
             }
 
 
-            .welcome, .calendar, .section-two-right {
+            .welcome,
+            .calendar,
+            .section-two-right {
                 width: 100%;
             }
         }
@@ -336,7 +374,9 @@
                 </button>
             </div>
             <div>
-                <img class="dashimage" src="https://res.cloudinary.com/dybryo15k/image/upload/v1724405189/dashimg_da9ukc.png" alt="Description of the image" />
+                <img class="dashimage"
+                    src="https://res.cloudinary.com/dybryo15k/image/upload/v1724405189/dashimg_da9ukc.png"
+                    alt="A person analysing video footage" />
             </div>
         </div>
         <div class="calendar">
@@ -356,6 +396,21 @@
                 <div class="days" id="days"></div>
             </div>
         </div>
+        <button id="settings-button" class="action-button">
+            <span><i class="fa fa-cog" aria-hidden="true"></i></span> Settings
+        </button>
+    </div>
+
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Settings</h2>
+            <label for="telegram-token">Telegram Bot Token:</label>
+            <input type="text" id="telegram-token" name="telegram-token">
+            <label for="group-id">Telegram Group ID:</label>
+            <input type="text" id="group-id" name="group-id">
+            <button id="save-settings" class="action-button">Save</button>
+        </div>
     </div>
 
 
@@ -370,7 +425,8 @@
                 {% for video in videos %}
                 <div class="video-container">
                     <video class="video-box" id="video{{ loop.index }}" controls>
-                        <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}" type="video/webm">
+                        <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}"
+                            type="video/webm">
                         Your browser does not support the video tag.
                     </video>
                     <button class="delete-button" onclick="deleteVideo('{{ video.file_name }}')">
@@ -380,7 +436,9 @@
                         <h3>Metadata</h3>
                         <p><strong>File Name:</strong> {{ video.file_name }}</p>
                         {% if video.metadata %}
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#metadataCollapse{{ loop.index }}" aria-expanded="false" aria-controls="metadataCollapse{{ loop.index }}">
+                        <button class="btn btn-primary" type="button" data-toggle="collapse"
+                            data-target="#metadataCollapse{{ loop.index }}" aria-expanded="false"
+                            aria-controls="metadataCollapse{{ loop.index }}">
                             Toggle Metadata
                         </button>
                         <div class="collapse" id="metadataCollapse{{ loop.index }}">
@@ -463,8 +521,22 @@
 
         // Function to run the surveillance system
         function runSurveillanceSystem() {
+            // Retrieve saved data from local storage
+            let telegramToken = localStorage.getItem("telegramToken");
+            let groupId = localStorage.getItem("groupId");
+
+            // Prepare data for API call
+            let data = {
+                telegramToken: telegramToken,
+                groupId: groupId
+            };
+
             fetch('/run-main', {
-                method: 'POST'
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             })
                 .then(response => response.json())
                 .then(data => {
@@ -480,6 +552,53 @@
 
         // Add event listener to the run surveillance button
         document.getElementById('run-surveillance').addEventListener('click', runSurveillanceSystem);
+
+        let modal = document.getElementById("settings-modal");
+        let btn = document.getElementById("settings-button");
+        let span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        // Load from local storage and set default values
+        let savedTelegramToken = localStorage.getItem("telegramToken");
+        let savedGroupId = localStorage.getItem("groupId");
+
+        if (savedTelegramToken) {
+            document.getElementById("telegram-token").value = savedTelegramToken;
+        }
+
+        if (savedGroupId) {
+            document.getElementById("group-id").value = savedGroupId;
+        }
+        let saveButton = document.getElementById("save-settings");
+
+        saveButton.onclick = function () {
+            let telegramToken = document.getElementById("telegram-token").value;
+            let groupId = document.getElementById("group-id").value;
+
+            // Save to local storage
+            localStorage.setItem("telegramToken", telegramToken);
+            localStorage.setItem("groupId", groupId);
+
+            // Alert the user that the settings have been saved
+            alert("Settings saved successfully. The configuration will be used when starting the surveillance system.");
+
+            // Close the modal
+            modal.style.display = "none";
+
+
+        };
     });
 
 
@@ -561,9 +680,5 @@
 
     renderCalendar(currentMonth, currentYear);
 </script>
+
 </html>
-
-
-
-
-
