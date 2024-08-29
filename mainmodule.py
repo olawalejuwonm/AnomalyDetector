@@ -13,14 +13,15 @@ from dotenv import load_dotenv  # for enviromental variables
 load_dotenv()
 
 class SurveillanceSystem:
-    def __init__(self):
+    def __init__(self, bot_token=None, chat_id=None, environment='development'):
         self.model = YOLO("yolov8n.pt")  # Load the YOLO model with the specified weights
         self.tracker = sv.ByteTrack()  # Initialize the ByteTrack tracker
         self.box_annotator = sv.BoxAnnotator()  # Initialize the BoxAnnotator for drawing bounding boxes
         self.label_annotator = sv.LabelAnnotator()  # Initialize the LabelAnnotator for drawing labels
         self.trace_annotator = sv.TraceAnnotator()  # Initialize the TraceAnnotator for drawing traces
-        self.bot_token = os.getenv("TELEGRAM_BOT_TOKEN")  # Telegram bot token
-        self.chat_id = os.getenv("TELEGRAM_CHAT_ID")  # Telegram chat ID
+        self.bot_token = bot_token or os.getenv("TELEGRAM_BOT_TOKEN")  # Telegram bot token
+        self.chat_id = chat_id or os.getenv("TELEGRAM_CHAT_ID")  # Telegram chat ID
+        self.environment = environment  or os.getenv("ENVIRONMENT")  # Environment
         self.camera = cv2.VideoCapture(0)  # Open the default camera
         self.is_recording = False  # Initialize recording state
         self.start_time = 0  # Initialize start time

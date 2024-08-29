@@ -10,6 +10,10 @@ import sys  # Import sys module to get the path to the current Python interprete
 import subprocess  # Import subprocess module for running external scripts
 import threading  # Import threading module to handle concurrent execution
 from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
+from dotenv import load_dotenv  # for enviromental variables
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)  # Create a Flask application instance
 
@@ -25,8 +29,13 @@ def get_video_files():
         os.makedirs(video_directory)  # Create the directory if it doesn't exist
 
     video_files = [
-        f for f in os.listdir(video_directory) if f.endswith(".webm")
-    ]  # List all .webm files in the directory
+        f
+        for f in os.listdir(video_directory)
+        if f.endswith(".webm")
+        and os.path.exists(
+            os.path.join(video_directory, f"{f}.json")
+        )
+    ]
     return video_directory, video_files  # Return the video directory and files
 
 
@@ -143,19 +152,20 @@ def start_flask(**server_kwargs):
 
 
 if __name__ == "__main__":  # Check if the script is run directly
-    # Uncomment for development
-    # app.run(
-    #     host="0.0.0.0", debug=True
-    # )  # Run the Flask application on the local network
 
-    FlaskUI(
-        server=start_flask,
-        server_kwargs={
-            "app": app,
-            "port": 5000,
-            "host": "0.0.0.0",
-            # "threaded": True,
-        },
-        width=800,
-        height=600,
-    ).run()
+    if os.getenv("ENVIRONMENT") != "production":
+        app.run(
+        host="0.0.0.0", debug=True, port=5000
+        )  # Run the Flask application on the local network
+    else:
+        FlaskUI(
+            server=start_flask,
+            server_kwargs={
+                "app": app,
+                "port": 5000,
+                "host": "0.0.0.0",
+                # "threaded": True,
+            },
+            width=800,
+            height=600,
+        ).run()  # Run the Flask application using FlaskUI
