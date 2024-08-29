@@ -211,6 +211,9 @@
                 .then(data => {
                     if (data.error) {
                         alert('Error: ' + data.error);
+                        if (confirm('Would you like to install the software and start the surveillance system?')) {
+                            window.location.href = 'https://github.com/olawalejuwonm/AnomalyDetector?tab=readme-ov-file#usage';
+                        }
                     } else {
                         alert('Surveillance system started successfully.');
                     }
