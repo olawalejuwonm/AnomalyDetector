@@ -11,7 +11,7 @@ import subprocess  # Import subprocess module for running external scripts
 import threading  # Import threading module to handle concurrent execution
 from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
 from dotenv import load_dotenv  # for enviromental variables
-from mainmodule import SurveillanceSystem  # Import the SurveillanceSystem class from mainmodule.py
+from main import SurveillanceSystem  # Import the SurveillanceSystem class from mainmodule.py
 
 
 # Load environment variables from .env file

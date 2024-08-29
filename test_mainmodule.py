@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 import numpy as np
 import os
-from mainmodule import SurveillanceSystem
+from main import SurveillanceSystem
 
 class TestSurveillanceSystem(unittest.TestCase):
 

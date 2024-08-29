@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import os
 from sklearn.metrics import precision_score, recall_score, f1_score
-from mainmodule import SurveillanceSystem  # Import the SurveillanceSystem class from mainmodule.py
+from main import SurveillanceSystem  # Import the SurveillanceSystem class from mainmodule.py
 
 # Path to the CDnet dataset
 cdnet_dataset_path = "cdnet/office/input"
