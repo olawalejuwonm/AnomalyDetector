@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 
 <body>
@@ -128,6 +128,34 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Calendar Script
+        const currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+        let currentDay = currentDate.getDate();
+        const monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        function renderCalendar(month, year) {
+            const daysElement = document.getElementById('days');
+            const monthYearElement = document.getElementById('monthYear');
+            daysElement.innerHTML = "";
+            monthYearElement.textContent = `${monthNames[month]} ${year}`;
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            for (let i = 0; i < firstDayIndex; i++) {
+                daysElement.innerHTML += `<span></span>`;
+            }
+            for (let i = 1; i <= daysInMonth; i++) {
+                if (i === currentDay && month === currentMonth && year === currentYear) {
+                    daysElement.innerHTML += `<span class="today">${i}</span>`;
+                } else {
+                    daysElement.innerHTML += `<span>${i}</span>`;
+                }
+            }
+        }
+        renderCalendar(currentMonth, currentYear);
         // Set the playback rate for all video elements to 0.1
         document.querySelectorAll('video').forEach(function (video) {
             video.playbackRate = 0.1;
@@ -146,10 +174,6 @@
                 })
                 .catch(error => console.error('Error fetching videos:', error));
         }
-
-
-
-
         // Function to update the total videos count for today
         function updateTotalVideosCount(videos) {
             const today = new Date().toISOString().split('T')[0];
@@ -159,31 +183,18 @@
             }).length;
             document.getElementById('total-videos-count').textContent = totalVideosToday;
         }
-
-
-
-
         fetchVideos();
         setInterval(fetchVideos, 1000);
-
-
-
-
         // Function to run the surveillance system
         function runSurveillanceSystem() {
             // Retrieve saved data from local storage
             let telegramToken = localStorage.getItem("telegramToken");
             let groupId = localStorage.getItem("groupId");
-
-
             // Prepare data for API call
             let data = {
                 telegramToken: telegramToken,
                 groupId: groupId
             };
-
-
-
             fetch('/run-main', {
                 method: 'POST',
                 headers: {
@@ -201,29 +212,17 @@
                 })
                 .catch(error => console.error('Error running surveillance system:', error));
         }
-
-
-
-
         // Add event listener to the run surveillance button
         document.getElementById('run-surveillance').addEventListener('click', runSurveillanceSystem);
-
-
         let modal = document.getElementById("settings-modal");
         let btn = document.getElementById("settings-button");
         let span = document.getElementsByClassName("close")[0];
-
-
         btn.onclick = function () {
             modal.style.display = "block";
         }
-
-
         span.onclick = function () {
             modal.style.display = "none";
         }
-
-
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
@@ -239,8 +238,6 @@
             document.getElementById("group-id").value = savedGroupId;
         }
         let saveButton = document.getElementById("save-settings");
-
-
         saveButton.onclick = function () {
             let telegramToken = document.getElementById("telegram-token").value;
             let groupId = document.getElementById("group-id").value;
@@ -256,6 +253,7 @@
             // Close the modal
             modal.style.display = "none";
         };
+
     });
 
     // Function to toggle play/pause for a video
@@ -289,58 +287,6 @@
                 .catch(error => console.error('Error deleting video:', error));
         }
     }
-    // Calendar Script
-    const currentDate = new Date();
-    let currentMonth = currentDate.getMonth();
-    let currentYear = currentDate.getFullYear();
-    let currentDay = currentDate.getDate();
 
-
-
-
-    const monthNames = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-
-
-
-
-    function renderCalendar(month, year) {
-        const daysElement = document.getElementById('days');
-        const monthYearElement = document.getElementById('monthYear');
-
-
-
-
-        daysElement.innerHTML = "";
-        monthYearElement.textContent = `${monthNames[month]} ${year}`;
-
-
-
-
-        const firstDayIndex = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-
-
-
-        for (let i = 0; i < firstDayIndex; i++) {
-            daysElement.innerHTML += `<span></span>`;
-        }
-
-
-
-
-        for (let i = 1; i <= daysInMonth; i++) {
-            if (i === currentDay && month === currentMonth && year === currentYear) {
-                daysElement.innerHTML += `<span class="today">${i}</span>`;
-            } else {
-                daysElement.innerHTML += `<span>${i}</span>`;
-            }
-        }
-    }
-    renderCalendar(currentMonth, currentYear);
 </script>
-
 </html>
