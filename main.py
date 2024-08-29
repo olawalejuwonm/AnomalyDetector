@@ -171,7 +171,7 @@ class SurveillanceSystem:
                 break
 
             processed_frame = self.process_frame(frame)  # Process the frame
-            cv2.imshow("Surveillance System (Press Q to Quit)", processed_frame)  # Display the processed frame
+            cv2.imshow("Intelligent Surveillance System (Press Q to Quit)", processed_frame)  # Display the processed frame
 
             if cv2.waitKey(1) & 0xFF == ord("q"):  # Press 'q' to quit
                 break
