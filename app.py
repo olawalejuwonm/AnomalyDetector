@@ -138,7 +138,9 @@ def run_main():
             try:
                 system.run()
             except Exception as e:
-                print(f"Error: {e}")
+                print(
+                    f"The system can't run on web. Starting the surveillance system requires running the software executable.Error: {e}"
+                )
 
         # Run the surveillance system in a separate thread
         thread = threading.Thread(target=run_system)
