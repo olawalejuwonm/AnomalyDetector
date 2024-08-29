@@ -167,17 +167,17 @@ def start_flask(**server_kwargs):
 
 
 if __name__ == "__main__":  # Check if the script is run directly
-
+    PORT = os.getenv("PORT", 5000)  # Get the port number from the environment variables
     if os.getenv("ENVIRONMENT") != "production":
         app.run(
-            host="0.0.0.0", debug=True, port=5000
+            host="0.0.0.0", debug=True, port=PORT
         )  # Run the Flask application on the local network
     else:
         FlaskUI(
             server=start_flask,
             server_kwargs={
                 "app": app,
-                "port": 5000,
+                "port": PORT,
                 "host": "0.0.0.0",
                 # "threaded": True,
             },
