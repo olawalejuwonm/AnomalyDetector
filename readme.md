@@ -42,7 +42,7 @@ Anomaly Detector is a Flask-based application designed to detect anomalies in vi
 
 3. The recorded videos and metadata will be saved in the specified directory.
 
-### How to obtain Telegram Bot Token and Chat ID
+### How to obtain Telegram Bot Token and Chat/Group ID
 
 To obtain a Telegram Bot Token and Chat ID for the Surveillance System, follow these steps:
 
@@ -52,6 +52,8 @@ To obtain a Telegram Bot Token and Chat ID for the Surveillance System, follow t
 4. Upon successful creation, you will receive a message containing a link to access the bot and a bot token. Save the bot token, as it will be needed for the Surveillance System to interact with the bot.
 5. To ensure that only authorized users can interact with the Telegram bot, restrict message handling to a specific user ID. Set the chat ID of the Telegram group as the authorized user ID.
 6. To find the chat ID of the group, use [t.me/myidbot](https://t.me/myidbot) to converse with IDBot. Add IDBot to the Telegram chat created and type `/getgroupid@myidbot` to obtain the chat ID of the group.
+
+
 
 Remember, setting the authorized chat ID is necessary to prevent unauthorized users from sending commands to the bot.
 
