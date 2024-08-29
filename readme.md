@@ -1,10 +1,10 @@
-https://github.com/olawalejuwonm/AnomalyDetector?tab=readme-ov-file#how-to-obtain-telegram-bot-token-and-chat-id
-
 # Anomaly Detector
 
 ## Overview
 
 Anomaly Detector is a Flask-based application designed to detect anomalies in video streams. The application captures video frames, processes them, and identifies any anomalies based on predefined criteria.
+
+CREDITS: [University of London](https://london.ac.uk/courses/computer-science-bsc)
 
 ## Features
 
