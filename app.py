@@ -15,7 +15,7 @@ try:
         SurveillanceSystem,
     )  # Import the SurveillanceSystem class from mainmodule.py
 except Exception as e:
-    print(f"(Web Environment)Error Importing Main : {e}")
+    print(f"(Web Environment) Error Importing Main : {e}")
 
 # Load environment variables from .env file
 load_dotenv()
@@ -150,7 +150,12 @@ def run_main():
             {"output": "Surveillance system started successfully."}
         )  # Return success message
     except Exception as e:
-        return jsonify({"error": str(e)})  # Return any exception as JSON
+        return jsonify(
+            {
+                "error": "The system can't run on web. Starting the surveillance system requires running the software executable on your machine"
+                + str(e)
+            }
+        )  # Return any exception as JSON
     finally:
         with lock:
             is_running = False  # Reset the running state
