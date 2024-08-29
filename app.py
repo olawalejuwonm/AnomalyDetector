@@ -9,10 +9,13 @@ import json  # Import json module for handling JSON data
 import threading  # Import threading module to handle concurrent execution
 from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
 from dotenv import load_dotenv  # for enviromental variables
-from main import (
-    SurveillanceSystem,
-)  # Import the SurveillanceSystem class from mainmodule.py
 
+try:
+    from main import (
+        SurveillanceSystem,
+    )  # Import the SurveillanceSystem class from mainmodule.py
+except Exception as e:
+    print(f"(Web Environment)Error Importing Main : {e}")
 
 # Load environment variables from .env file
 load_dotenv()
