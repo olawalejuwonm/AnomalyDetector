@@ -17,7 +17,6 @@
 
 
         .section-one {
-            width:"100%";
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
@@ -27,7 +26,7 @@
 
 
         .welcome {
-            width: 200px;
+            width: 100%;
             background-color: #6264D5;
             display: flex;
             align-items: center;
@@ -305,7 +304,6 @@
 
         @media (max-width: 576px) {
             .section-one {
-                width: "50%";
                 padding: 10px;
                 grid-template-columns: 1fr;
             }
@@ -339,8 +337,9 @@
             </div>
             <div>
                 <img class="dashimage" src="https://res.cloudinary.com/dybryo15k/image/upload/v1724405189/dashimg_da9ukc.png" alt="Description of the image" />
-            </div>  
-              <div class="calendar">
+            </div>
+        </div>
+        <div class="calendar">
             <div class="calendar-header">
                 <span class="month-year" id="monthYear"></span>
             </div>
@@ -357,8 +356,6 @@
                 <div class="days" id="days"></div>
             </div>
         </div>
-        </div>
-    
     </div>
 
 
@@ -389,7 +386,7 @@
                         <div class="collapse" id="metadataCollapse{{ loop.index }}">
                             <p><strong>Start Time:</strong> {{ video.metadata.start_time }}</p>
                             <p><strong>End Time:</strong> {{ video.metadata.end_time }}</p>
-                            <p><strong>Total Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
+                            <p><strong>Total Video Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
                             <h4>Detections:</h4>
                             <ul>
                                 {% for tracker_id, detection in video.metadata.detections.items() %}

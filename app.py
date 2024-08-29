@@ -11,6 +11,8 @@ import subprocess  # Import subprocess module for running external scripts
 import threading  # Import threading module to handle concurrent execution
 from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
 from dotenv import load_dotenv  # for enviromental variables
+from mainmodule import SurveillanceSystem  # Import the SurveillanceSystem class from mainmodule.py
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -122,13 +124,21 @@ def run_main():
         is_running = True
 
     try:
-        # Use the same Python interpreter that is running the Flask application
-        result = subprocess.run(
-            [sys.executable, "main.py"], capture_output=True, text=True
-        )
-        print(result.stdout)  # Print the output of the script
-        print("Error:", result.stderr)  # Print any errors from the script
-        return jsonify({"output": result.stdout})  # Return the output as JSON
+        # Create an instance of the SurveillanceSystem class
+        system = SurveillanceSystem()
+
+        # Function to run the surveillance system and capture output
+        def run_system():
+            try:
+                system.run()
+            except Exception as e:
+                print(f"Error: {e}")
+
+        # Run the surveillance system in a separate thread
+        thread = threading.Thread(target=run_system)
+        thread.start()
+
+        return jsonify({"output": "Surveillance system started successfully."})  # Return success message
     except Exception as e:
         return jsonify({"error": str(e)})  # Return any exception as JSON
     finally:
