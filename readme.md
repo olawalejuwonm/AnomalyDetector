@@ -10,10 +10,15 @@ Anomaly Detector is a Flask-based application designed to detect anomalies in vi
 
 - Real-time video capture and processing
 - Anomaly detection using custom algorithms
-- REST API for starting and stopping video recording
+- REST API for starting video recording on connected device
 - Metadata storage for recorded videos
 
-## Installation
+
+## Usage
+
+### Software Installation
+
+### Local Installation
 
 1. Clone the repository:
     ```sh
@@ -33,14 +38,11 @@ Anomaly Detector is a Flask-based application designed to detect anomalies in vi
     pip install -r requirements.txt
     ```
 
-## Usage
-
-1. Start the Flask application:
+4. Start the Flask application:
     ```sh
     python app.py
     ```
 
-3. The recorded videos and metadata will be saved in the specified directory.
 
 ### How to obtain Telegram Bot Token and Chat/Group ID
 
