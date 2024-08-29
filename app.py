@@ -6,8 +6,6 @@ from flask import (
 )  # Import necessary Flask modules
 import os  # Import os module for interacting with the operating system
 import json  # Import json module for handling JSON data
-import sys  # Import sys module to get the path to the current Python interpreter
-import subprocess  # Import subprocess module for running external scripts
 import threading  # Import threading module to handle concurrent execution
 from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
 from dotenv import load_dotenv  # for enviromental variables
