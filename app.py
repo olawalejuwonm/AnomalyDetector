@@ -152,7 +152,7 @@ def run_main():
     except Exception as e:
         return jsonify(
             {
-                "error": "The system can't run on web. Starting the surveillance system requires running the software executable on your machine"
+                "error": "The system can't run on web. Starting the surveillance system requires running the software executable on your machine. "
                 + str(e)
             }
         )  # Return any exception as JSON
