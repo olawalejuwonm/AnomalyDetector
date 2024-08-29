@@ -40,7 +40,7 @@ Anomaly Detector is a Flask-based application designed to detect anomalies in vi
 
 3. The recorded videos and metadata will be saved in the specified directory.
 
-# How to obtain Telegram Configuration
+### How to obtain Telegram Bot Token and Chat ID
 
 NOTE:  If you enjoyed using this software, please leave a STAR on the repository. It will help others find the repository and encourage me to continue working on it.
  
