@@ -189,8 +189,7 @@ if __name__ == "__main__":  # Check if the script is run directly
                 "app": app,
                 "port": PORT,
                 "host": "0.0.0.0",
-                # "threaded": True,
             },
-            width=800,
+            width=900,
             height=600,
         ).run()  # Run the Flask application using FlaskUI
