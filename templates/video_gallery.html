@@ -1,332 +1,15 @@
 <!DOCTYPE html>
 <html lang="en"> <!-- Specifies the language of the document -->
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surveillance System</title>
+    <title>Intelligent Surveillance System</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            background-color: #EFF1FE;
-            padding: 30px 30px;
-        }
-
-
-        .section-one {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            justify-content: center;
-            align-items: center;
-        }
-
-
-        .welcome {
-            width: 100%;
-            background-color: #6264D5;
-            display: flex;
-            align-items: center;
-            padding: 30px 0px 20px 40px;
-            border-radius: 20px;
-            margin-left: 60px;
-            flex: 1 1 100%;
-        }
-
-
-        .title {
-            position: relative;
-            font-size: 30px;
-            font-weight: bolder;
-            color: white;
-            font-family: 'Raleway', sans-serif;
-
-        }
-
-
-        .desc {
-            font-size: 20px;
-            color: white;
-            font-family: 'Raleway', sans-serif;
-        }
-
-
-        .dashimage {
-            width: 300px;
-            height: 300px;
-        }
-
-
-        .calendar {
-            /* width: 320px; */
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            width: 100%;
-            flex: 1 1 100%;
-            margin-top: 10px;
-            margin-left: 80px
-        }
-
-
-        .calendar-header {
-            text-align: left;
-            margin-bottom: 10px;
-        }
-
-
-        .month-year {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-        }
-
-
-        .weekdays {
-            display: flex;
-            justify-content: space-between;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 10px;
-        }
-
-
-        .weekdays span {
-            font-weight: bold;
-            color: #666;
-            width: 14.28%;
-            text-align: center;
-        }
-
-
-        .days {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-
-        .days span {
-            width: 14.28%;
-            text-align: center;
-            padding: 10px 0;
-            border-radius: 50%;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
-
-
-        .days .today {
-            background-color: #637cff;
-            color: white;
-            border-radius: 50%;
-        }
-
-
-        .section-two {
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-
-        .section-two-left {
-            width: 100%;
-        }
-
-
-        .section-two-right {
-            margin-top: 50px;
-            width: 30%;
-            flex: 1 1 100%;
-        }
-
-
-        .container {
-            width: 100%;
-            height: 610px;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-        }
-
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-
-        .tab {
-            background-color: #E5EAF2;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #555;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-
-        .tab:hover {
-            background-color: #D4DBE4;
-        }
-
-
-        .content {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-
-        .no-videos {
-            font-size: 24px;
-            color: #ccc;
-            text-align: center;
-        }
-
-
-        .action-button {
-            margin-top: 90px;
-            color: #6264D5;
-            background-color: #fff;
-            padding: 6px 10px;
-            border: none;
-            font-size: medium;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            border-radius: 10px;
-        }
-
-
-        .video-card {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-
-        .video-container {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-
-        .video-box {
-            width: 100%;
-            border-radius: 30px;
-        }
-
-
-        .play-button {
-            position: absolute;
-            top: 240px;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: pointer;
-            padding: 10px 20px;
-            color: white;
-            font-size: 20px;
-            border: none;
-            text-align: center;
-        }
-
-
-        .total-videos-card {
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            margin-top: 40px;
-        }
-
-
-        .delete-button {
-            position: absolute;
-            top: 30px;
-            right: 20px;
-            padding: 5px 10px;
-            background-color: red;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-        }
-
-
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .video-card {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-
-            .welcome, .calendar, .section-two-right {
-                width: 100%;
-            }
-        }
-
-
-        @media (max-width: 768px) {
-            .video-card {
-                grid-template-columns: repeat(1, 1fr);
-            }
-
-
-            .title {
-                font-size: 24px;
-            }
-
-
-            .desc {
-                font-size: 16px;
-            }
-
-
-            .play-button {
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-        }
-
-
-        @media (max-width: 576px) {
-            .section-one {
-                padding: 10px;
-                grid-template-columns: 1fr;
-            }
-
-
-            .action-button {
-                margin-top: 30px;
-                padding: 5px 8px;
-                font-size: small;
-            }
-
-
-            .total-videos-card {
-                margin-top: 20px;
-                padding: 8px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
-
 
 <body>
     <div class="section-one">
@@ -334,18 +17,22 @@
             <div>
                 <p class="title">Intelligent Surveillance System</p>
                 <p class="desc">Web Dashboard</p>
-                <button id="run-surveillance" class="action-button">
-                    <span><i class="fa fa-play" aria-hidden="true"></i></span> Start Surveillance System
-                </button>
+                <div class="grid">
+                    <button id="run-surveillance" class="action-button">
+                        <span><i class="fa fa-play" aria-hidden="true"></i></span> Start Surveillance System
+                    </button>
+                    <button id="settings-button" class="action-button">
+                        <span><i class="fa fa-cog" aria-hidden="true"></i></span> Settings
+                    </button>
+                </div>
             </div>
             <div>
-                <img class="dashimage" src="https://res.cloudinary.com/dybryo15k/image/upload/v1724405189/dashimg_da9ukc.png" alt="Description of the image" />
+                <img class="dashimage"
+                    src="https://res.cloudinary.com/dybryo15k/image/upload/v1724405189/dashimg_da9ukc.png"
+                    alt="A person analysing video footage" />
             </div>
         </div>
-      
-    </div>
-
-  <div class="calendar">
+        <div class="calendar">
             <div class="calendar-header">
                 <span class="month-year" id="monthYear"></span>
             </div>
@@ -362,18 +49,36 @@
                 <div class="days" id="days"></div>
             </div>
         </div>
+
+    </div>
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="h2">Settings</h2>
+            <p>
+                <a href="https://github.com/olawalejuwonm/AnomalyDetector?tab=readme-ov-file#how-to-obtain-telegram-bot-token-and-chatgroup-id"
+                    target="_blank">How to obtain Telegram Bot
+                    Token and Group ID</a><br>
+            </p>
+            <label for="telegram-token">Telegram Bot Token:</label>
+            <input type="text" id="telegram-token" name="telegram-token">
+            <label for="group-id">Telegram Group ID:</label>
+            <input type="text" id="group-id" name="group-id">
+            <button id="save-settings" class="action-button">Save</button>
+        </div>
+    </div>
     <div class="section-two">
         <div class="section-two-left">
             <div class="total-videos-card">
-                <h3>Today total incident footage: <span id="total-videos-count">Loading...</span></h3>
+                <h3>Today's total incident footage: <span id="total-videos-count">Loading...</span></h3>
             </div>
-
 
             <div class="video-card">
                 {% for video in videos %}
                 <div class="video-container">
                     <video class="video-box" id="video{{ loop.index }}" controls>
-                        <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}" type="video/webm">
+                        <source src="{{ url_for('static', filename='recorded_videos/' ~ video.file_name) }}"
+                            type="video/webm">
                         Your browser does not support the video tag.
                     </video>
                     <button class="delete-button" onclick="deleteVideo('{{ video.file_name }}')">
@@ -383,13 +88,15 @@
                         <h3>Metadata</h3>
                         <p><strong>File Name:</strong> {{ video.file_name }}</p>
                         {% if video.metadata %}
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#metadataCollapse{{ loop.index }}" aria-expanded="false" aria-controls="metadataCollapse{{ loop.index }}">
+                        <button class="btn btn-primary" type="button" data-toggle="collapse"
+                            data-target="#metadataCollapse{{ loop.index }}" aria-expanded="false"
+                            aria-controls="metadataCollapse{{ loop.index }}">
                             Toggle Metadata
                         </button>
                         <div class="collapse" id="metadataCollapse{{ loop.index }}">
                             <p><strong>Start Time:</strong> {{ video.metadata.start_time }}</p>
                             <p><strong>End Time:</strong> {{ video.metadata.end_time }}</p>
-                            <p><strong>Total Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
+                            <p><strong>Total Video Duration:</strong> {{ video.metadata.total_duration }} seconds</p>
                             <h4>Detections:</h4>
                             <ul>
                                 {% for tracker_id, detection in video.metadata.detections.items() %}
@@ -419,20 +126,45 @@
             </div>
         </div>
     </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
-
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Calendar Script
+        const currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+        let currentDay = currentDate.getDate();
+        const monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        function renderCalendar(month, year) {
+            const daysElement = document.getElementById('days');
+            const monthYearElement = document.getElementById('monthYear');
+            daysElement.innerHTML = "";
+            monthYearElement.textContent = `${monthNames[month]} ${year}`;
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            for (let i = 0; i < firstDayIndex; i++) {
+                daysElement.innerHTML += `<span></span>`;
+            }
+            for (let i = 1; i <= daysInMonth; i++) {
+                if (i === currentDay && month === currentMonth && year === currentYear) {
+                    daysElement.innerHTML += `<span class="today">${i}</span>`;
+                } else {
+                    daysElement.innerHTML += `<span>${i}</span>`;
+                }
+            }
+        }
+        renderCalendar(currentMonth, currentYear);
         // Set the playback rate for all video elements to 0.1
         document.querySelectorAll('video').forEach(function (video) {
             video.playbackRate = 0.1;
         });
-
 
         // Function to fetch the list of videos from the server
         function fetchVideos() {
@@ -447,8 +179,6 @@
                 })
                 .catch(error => console.error('Error fetching videos:', error));
         }
-
-
         // Function to update the total videos count for today
         function updateTotalVideosCount(videos) {
             const today = new Date().toISOString().split('T')[0];
@@ -458,33 +188,85 @@
             }).length;
             document.getElementById('total-videos-count').textContent = totalVideosToday;
         }
-
-
         fetchVideos();
-        setInterval(fetchVideos, 5000);
-
-
+        setInterval(fetchVideos, 1000);
         // Function to run the surveillance system
         function runSurveillanceSystem() {
+            // Retrieve saved data from local storage
+            let telegramToken = localStorage.getItem("telegramToken");
+            let groupId = localStorage.getItem("groupId");
+            // Prepare data for API call
+            let data = {
+                telegramToken: telegramToken,
+                groupId: groupId
+            };
             fetch('/run-main', {
-                method: 'POST'
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             })
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
                         alert('Error: ' + data.error);
-                    } else {
+                    }
+                    else if (data.StartError) {
+                        alert('Error: ' + data.StartError);
+                        if (confirm('Would you like to install the software and start the surveillance system?')) {
+                            window.location.href = 'https://github.com/olawalejuwonm/AnomalyDetector?tab=readme-ov-file#usage';
+                        }
+                    }
+                    else {
                         alert('Surveillance system started successfully.');
                     }
                 })
                 .catch(error => console.error('Error running surveillance system:', error));
         }
-
-
         // Add event listener to the run surveillance button
         document.getElementById('run-surveillance').addEventListener('click', runSurveillanceSystem);
-    });
+        let modal = document.getElementById("settings-modal");
+        let btn = document.getElementById("settings-button");
+        let span = document.getElementsByClassName("close")[0];
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        // Load from local storage and set default values
+        let savedTelegramToken = localStorage.getItem("telegramToken");
+        let savedGroupId = localStorage.getItem("groupId");
+        if (savedTelegramToken) {
+            document.getElementById("telegram-token").value = savedTelegramToken;
+        }
+        if (savedGroupId) {
+            document.getElementById("group-id").value = savedGroupId;
+        }
+        let saveButton = document.getElementById("save-settings");
+        saveButton.onclick = function () {
+            let telegramToken = document.getElementById("telegram-token").value;
+            let groupId = document.getElementById("group-id").value;
+            // Save to local storage
+            localStorage.setItem("telegramToken", telegramToken);
+            localStorage.setItem("groupId", groupId);
 
+
+            // Alert the user that the settings have been saved
+            alert("Settings saved successfully. The configuration will be used when starting the surveillance system.");
+
+
+            // Close the modal
+            modal.style.display = "none";
+        };
+
+    });
 
     // Function to toggle play/pause for a video
     function togglePlayPause(videoId) {
@@ -495,8 +277,6 @@
             video.pause();
         }
     }
-
-
     // Function to delete a video
     function deleteVideo(fileName) {
         if (confirm('Are you sure you want to delete this video?')) {
@@ -520,53 +300,6 @@
         }
     }
 
-
-    // Calendar Script
-    const currentDate = new Date();
-    let currentMonth = currentDate.getMonth();
-    let currentYear = currentDate.getFullYear();
-    let currentDay = currentDate.getDate();
-
-
-    const monthNames = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-
-
-    function renderCalendar(month, year) {
-        const daysElement = document.getElementById('days');
-        const monthYearElement = document.getElementById('monthYear');
-
-
-        daysElement.innerHTML = "";
-        monthYearElement.textContent = `${monthNames[month]} ${year}`;
-
-
-        const firstDayIndex = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-
-        for (let i = 0; i < firstDayIndex; i++) {
-            daysElement.innerHTML += `<span></span>`;
-        }
-
-
-        for (let i = 1; i <= daysInMonth; i++) {
-            if (i === currentDay && month === currentMonth && year === currentYear) {
-                daysElement.innerHTML += `<span class="today">${i}</span>`;
-            } else {
-                daysElement.innerHTML += `<span>${i}</span>`;
-            }
-        }
-    }
-
-
-    renderCalendar(currentMonth, currentYear);
 </script>
+
 </html>
-
-
-
-
-

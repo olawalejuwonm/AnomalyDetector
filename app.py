@@ -6,10 +6,16 @@ from flask import (
 )  # Import necessary Flask modules
 import os  # Import os module for interacting with the operating system
 import json  # Import json module for handling JSON data
-import sys  # Import sys module to get the path to the current Python interpreter
-import subprocess  # Import subprocess module for running external scripts
 import threading  # Import threading module to handle concurrent execution
 from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
+from dotenv import load_dotenv  # for enviromental variables
+from main import (
+    SurveillanceSystem,
+)  # Import the SurveillanceSystem class from mainmodule.py
+
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)  # Create a Flask application instance
 
@@ -25,8 +31,11 @@ def get_video_files():
         os.makedirs(video_directory)  # Create the directory if it doesn't exist
 
     video_files = [
-        f for f in os.listdir(video_directory) if f.endswith(".webm")
-    ]  # List all .webm files in the directory
+        f
+        for f in os.listdir(video_directory)
+        if f.endswith(".webm")
+        and os.path.exists(os.path.join(video_directory, f"{f}.json"))
+    ]
     return video_directory, video_files  # Return the video directory and files
 
 
@@ -113,15 +122,37 @@ def run_main():
         is_running = True
 
     try:
-        # Use the same Python interpreter that is running the Flask application
-        result = subprocess.run(
-            [sys.executable, "main.py"], capture_output=True, text=True
-        )
-        print(result.stdout)  # Print the output of the script
-        print("Error:", result.stderr)  # Print any errors from the script
-        return jsonify({"output": result.stdout})  # Return the output as JSON
+        # Get telegramToken and groupId from the request body
+        data = request.get_json()
+        telegram_token = data.get("telegramToken")
+        group_id = data.get("groupId")
+
+        # Create an instance of the SurveillanceSystem class
+        system = SurveillanceSystem(bot_token=telegram_token, chat_id=group_id)
+
+        # Function to run the surveillance system and capture output
+        def run_system():
+            try:
+                system.run()
+            except Exception as e:
+                print(
+                    f"The system can't run on web. Starting the surveillance system requires running the software executable.Error: {e}"
+                )
+
+        # Run the surveillance system in a separate thread
+        thread = threading.Thread(target=run_system)
+        thread.start()
+
+        return jsonify(
+            {"output": "Surveillance system started successfully."}
+        )  # Return success message
     except Exception as e:
-        return jsonify({"error": str(e)})  # Return any exception as JSON
+        return jsonify(
+            {
+                "StartError": "The system can't run on web. Starting the surveillance system requires running the software executable on your machine. "
+                + str(e)
+            }
+        )  # Return any exception as JSON
     finally:
         with lock:
             is_running = False  # Reset the running state
@@ -143,19 +174,19 @@ def start_flask(**server_kwargs):
 
 
 if __name__ == "__main__":  # Check if the script is run directly
-    # Uncomment for development
-    # app.run(
-    #     host="0.0.0.0", debug=True
-    # )  # Run the Flask application on the local network
-
-    FlaskUI(
-        server=start_flask,
-        server_kwargs={
-            "app": app,
-            "port": 5000,
-            "host": "0.0.0.0",
-            # "threaded": True,
-        },
-        width=800,
-        height=600,
-    ).run()
+    PORT = os.getenv("PORT", 5000)  # Get the port number from the environment variables
+    if os.getenv("ENVIRONMENT") != "production":
+        app.run(
+            host="0.0.0.0", debug=True, port=PORT
+        )  # Run the Flask application on the local network
+    else:
+        FlaskUI(
+            server=start_flask,
+            server_kwargs={
+                "app": app,
+                "port": PORT,
+                "host": "0.0.0.0",
+            },
+            width=900,
+            height=600,
+        ).run()  # Run the Flask application using FlaskUI
