@@ -50,7 +50,7 @@ class SurveillanceSystem:
         self.frame_count = 0  # Initialize frame counter
         self.frame_rate = 20.0  # Frame rate of the video
 
-        print(self.bot_token, self.chat_id)
+        # print(self.bot_token, self.chat_id)
 
         if not os.path.exists(self.video_directory):
             os.makedirs(
