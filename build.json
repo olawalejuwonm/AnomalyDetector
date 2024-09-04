@@ -80,6 +80,10 @@
   {
    "optionDest": "datas",
    "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/static/styles.css;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/.venv/Lib/site-packages/ultralytics/cfg/default.yaml;."
   }
  ],
  "nonPyinstallerOptions": {
