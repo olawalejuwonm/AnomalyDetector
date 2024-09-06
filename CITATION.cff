@@ -1,6 +1,6 @@
 abstract: <p>This research project entails development of an Intelligent Surveillance System that uses motion anomaly detection.</p>
 authors:
-  family-names: Olawale Micheal Juwon
+ - family-names: Olawale Micheal Juwon
 cff-version: 1.2.0
 date-released: '2024-09-06'
 doi: 10.5281/zenodo.13714360
