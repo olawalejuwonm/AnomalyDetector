@@ -1,0 +1,14 @@
+abstract: <p>This is the web build of the surveillance system, this doesn't have access
+  to the main system.</p>
+authors:
+- affiliation: '@Anutio @cephas-digital @beentos-project @Purpose-Media1'
+  family-names: Olawale Micheal Juwon
+cff-version: 1.2.0
+date-released: '2024-09-06'
+doi: 10.5281/zenodo.13714360
+license:
+- cc-by-4.0
+repository-code: https://github.com/olawalejuwonm/AnomalyDetector/tree/web
+title: 'olawalejuwonm/AnomalyDetector: Web Build'
+type: software
+version: web

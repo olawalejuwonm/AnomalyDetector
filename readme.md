@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/807640991.svg)](https://zenodo.org/doi/10.5281/zenodo.13714360)
+
 # Anomaly Detector
 
 ## Overview
@@ -128,4 +130,4 @@ last_movement_frame_count = 0
 
 
 
-[![DOI](https://zenodo.org/badge/807640991.svg)](https://zenodo.org/doi/10.5281/zenodo.13714360)
+
