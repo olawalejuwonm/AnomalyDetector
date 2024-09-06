@@ -1,4 +1,4 @@
-abstract: <p>This research project entails development of an Intelligent Surveillance System that uses motion anomaly detection.</p>
+abstract: <p>This research project entails development of an Intelligent Surveillance System that uses motion anomaly detection with the aim of achieving greater intelligence performance over conventional surveillance systems and fostering users privacy such that the data is fully owned and  managed by the user. The development of the project has established that the purpose of a surveillance system is not necessarily to track irrelevant activities in the frame of a footage that have no security implications such as pixel changes which are common with motion detection algorithms  affected by illumination changes causing false positive alarm rate. </p>
 authors:
  - family-names: Olawale Micheal Juwon
 cff-version: 1.2.0
