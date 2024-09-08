@@ -6,6 +6,14 @@
 
 Anomaly Detector is a Flask-based application designed to detect anomalies in video streams. The application captures video frames, processes them, and identifies any anomalies based on predefined criteria.
 
+It focuses on developing indoor surveillance, leveraging advanced motion detection algorithms to enhance privacy, efficiency, and adaptability. It also addresses the limitations of traditional home security systems, which rely heavily on human monitoring and are prone to false alarms.
+
+The proposed solution relies on local processing, using intelligent object detection to avoid the use of third-party services and improve users' privacy. It was driven by two major development iterations: the first on hardware components comprising an ESP32-CAM and a passive infrared-PIR sensor, and the second purely in software based on Supervision, Ultralytics, and YOLOv8 computer vision algorithms.
+
+The second iteration performs better than the first concerning cost, flexibility, and adaptability by shifting from motion detection to object-focused anomaly detection. The system can operate standalone, processing real-time video and tracking object behaviour while notifying users through its web dashboard. An evaluation was conducted through user acceptance testing, accessibility testing, and performance metrics, showing the system's effectiveness in various lighting conditions and its potential for more general purposes.
+
+Future system enhancements could include integrating hardware and software solutions for optimal performance in low-light conditions and expanding notification services.
+
 CREDITS: [University of London](https://www.london.ac.uk/study/courses/undergraduate/bsc-computer-science)
 
 ## Features
@@ -19,6 +27,8 @@ CREDITS: [University of London](https://www.london.ac.uk/study/courses/undergrad
 ## Usage
 
 ### Software Installation
+
+To install the software, please follow the instructions provided in the project releases section. This section contains the latest versions of the software, along with detailed installation guides and release notes.
 
 ### Local Installation
 
@@ -63,17 +73,6 @@ Remember, setting the authorized chat ID is necessary to prevent unauthorized us
 
 P.S:  If you enjoyed using this software, please leave a STAR on the repository. It will help others find the repository and encourage me to continue working on it.
  
-## API Endpoints
-
-
-- `POST /run-main`: Runs the [`main.py`]("main.py") script.
-
-## Configuration
-
-You can configure various parameters in the `config.py` file, such as:
-- Video save directory
-- Recording duration
-- Anomaly detection thresholds
 
 ## Contributing
 
@@ -87,47 +86,6 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 - [OpenCV](https://opencv.org/) for video processing
 - [Flask](https://flask.palletsprojects.com/) for the web framework
-
-
-# Initialize the frame count for the last detected movement
-last_movement_frame_count = 0
-
-        if "detections" in metadata and any(
-            metadata["detections"].get(int(tracker_id), {}).get("previous_position")
-            is not None
-            and metadata["detections"][int(tracker_id)]["previous_position"]
-            != bbox.tolist()
-            for tracker_id, bbox in zip(
-                detected_objects.tracker_id, detected_objects.xyxy
-            )
-        ):
-            last_movement_frame_count = frame_count
-
-
-        else:
-            if is_recording:
-                elapsed_time_since_movement = (
-                    frame_count - last_movement_frame_count
-                ) / frame_rate
-                if elapsed_time_since_movement >= 3:
-                    is_recording = False  # Stop recording
-                    # Use a separate thread to release the video and write metadata
-                    threading.Thread(
-                        target=release_video,
-                        args=(
-                            out,
-                            metadata,
-                            start_time,
-                            record_duration,
-                            video_directory,
-                        ),
-                    ).start()
-
-
-
-
-{0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter', 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant', 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie', 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite', 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket', 39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl', 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog', 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed', 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard', 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush'}
-
-
-
-
+- [Supervision](https://github.com/your-repo/supervision) for tracking and annotation tools
+- [Ultralytics](https://ultralytics.com/) for the YOLO models
+- [YOLO](https://github.com/AlexeyAB/darknet) for the object detection framework
