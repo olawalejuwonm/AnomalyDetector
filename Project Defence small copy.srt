@@ -124,134 +124,107 @@
 
 32
 00:00:04,613 --> 00:00:05,654
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 33
 00:00:05,654 --> 00:00:06,454
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 34
 00:00:06,454 --> 00:00:06,494
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 35
 00:00:06,494 --> 00:00:06,875
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 36
 00:00:06,875 --> 00:00:06,895
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 37
 00:00:06,895 --> 00:00:07,315
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 38
 00:00:07,315 --> 00:00:07,495
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 39
 00:00:07,495 --> 00:00:07,755
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 40
 00:00:07,755 --> 00:00:07,775
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 41
 00:00:07,775 --> 00:00:08,036
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 42
 00:00:08,036 --> 00:00:08,196
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 43
 00:00:08,196 --> 00:00:08,576
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 44
 00:00:08,576 --> 00:00:08,616
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 45
 00:00:08,616 --> 00:00:09,016
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 46
 00:00:09,016 --> 00:00:09,517
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+
 
 47
 00:00:09,517 --> 00:00:09,697
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ <u>The</u> aim of the project is
 
 48
 00:00:09,697 --> 00:00:09,777
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ The aim of the project is
 
 49
 00:00:09,777 --> 00:00:09,917
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ The <u>aim</u> of the project is
 
 50
 00:00:09,917 --> 00:00:10,037
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ The aim of the project is
 
 51
 00:00:10,037 --> 00:00:10,117
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ The aim <u>of</u> the project is
 
 52
 00:00:10,117 --> 00:00:10,137
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ The aim of the project is
 
 53
 00:00:10,137 --> 00:00:10,237
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ The aim of <u>the</u> project is
 
 54
 00:00:10,237 --> 00:00:10,277
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ The aim of the project is
 
 55
 00:00:10,277 --> 00:00:10,638
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ The aim of the <u>project</u> is
 
 56
 00:00:10,638 --> 00:00:10,918
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
+ The aim of the project is
 
 57
 00:00:10,918 --> 00:00:11,058
-Intelligent Surveillance System Using Motion 
-Anomaly Detector. The aim of the project is
-
+ The aim of the project <u>is</u>
 58
 00:00:09,517 --> 00:00:11,178
 firstly to develop a surveillance system that is 
