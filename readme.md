@@ -4,7 +4,7 @@
 
 ## Overview
 
-Anomaly Detector is a Flask-based application designed to detect anomalies in video streams. The application captures video frames, processes them, and identifies any anomalies based on predefined criteria.
+Anomaly Detector is a Flask-based application designed to detect anomalies in video streams. The application captures video frames, processes them, and identifies any anomalies while alerting the supervisor.
 
 It focuses on developing indoor surveillance, leveraging advanced motion detection algorithms to enhance privacy, efficiency, and adaptability. It also addresses the limitations of traditional home security systems, which rely heavily on human monitoring and are prone to false alarms.
 
