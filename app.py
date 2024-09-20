@@ -129,9 +129,12 @@ def run_main():
         data = request.get_json()
         telegram_token = data.get("telegramToken")
         group_id = data.get("groupId")
+        send_video = data.get("sendVideo") or False  # Get the sendVideo flag
 
         # Create an instance of the SurveillanceSystem class
-        system = SurveillanceSystem(bot_token=telegram_token, chat_id=group_id)
+        system = SurveillanceSystem(
+            bot_token=telegram_token, chat_id=group_id, send_recording=send_video
+        )
 
         # Function to run the surveillance system and capture output
         def run_system():
