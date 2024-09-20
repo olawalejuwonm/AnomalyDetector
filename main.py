@@ -16,7 +16,7 @@ load_dotenv()
 
 
 class SurveillanceSystem:
-    def __init__(self, bot_token=None, chat_id=None, environment="development"):
+    def __init__(self, bot_token=None, chat_id=None, environment="development", send_recording=False):
         self.model = YOLO(
             "yolov8n.pt"
         )  # Load the YOLO model with the specified weights
@@ -35,6 +35,7 @@ class SurveillanceSystem:
         )  # Telegram bot token
         self.chat_id = chat_id or os.getenv("TELEGRAM_CHAT_ID")  # Telegram chat ID
         self.environment = environment or os.getenv("ENVIRONMENT")  # Environment
+        self.send_recording = send_recording # For sending recorded video to telegram
         self.camera = cv2.VideoCapture(0)  # Open the default camera
         self.is_recording = False  # Initialize recording state
         self.start_time = 0  # Initialize start time
@@ -98,6 +99,7 @@ class SurveillanceSystem:
             conn.close()
 
             if response.status != 200:
+                print(response_data)
                 raise ValueError(f"Failed to send message: {response.status}")
 
             return json.loads(response_data)
@@ -156,6 +158,55 @@ class SurveillanceSystem:
         except Exception as e:
             print(f"Error sending frame: {e}")
 
+    def send_telegram_video(self, video_path, filename="video.webm"):
+        """
+        Sends a video to a Telegram chat.
+
+        Parameters:
+        - video_path (str): The path to the video file to send.
+        - filename (str): The filename to save the video as.
+
+        Returns:
+        - response (dict): The response from the Telegram API.
+        """
+        try:
+            # Prepare the multipart/form-data payload
+            boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW"
+            payload = (
+                f"--{boundary}\r\n"
+                f'Content-Disposition: form-data; name="chat_id"\r\n\r\n{self.chat_id}\r\n'
+                f"--{boundary}\r\n"
+                f'Content-Disposition: form-data; name="video"; filename="{filename}"\r\n'
+                f"Content-Type: {mimetypes.guess_type(filename)[0]}\r\n\r\n"
+            )
+
+            with open(video_path, "rb") as f:
+                file_data = f.read()
+
+            payload += file_data.decode("latin1")
+            payload += f"\r\n--{boundary}--\r\n"
+
+            headers = {
+                "Content-Type": f"multipart/form-data; boundary={boundary}",
+                "Content-Length": str(len(payload)),
+            }
+
+            # Send the video to Telegram
+            conn = http.client.HTTPSConnection("api.telegram.org")
+            conn.request(
+                "POST", f"/bot{self.bot_token}/sendVideo", body=payload, headers=headers
+            )
+            response = conn.getresponse()
+            response_data = response.read().decode("utf-8")
+            conn.close()
+
+            if response.status != 200:
+                raise ValueError(f"Failed to send video: {response.status}")
+
+            return json.loads(response_data)
+        except Exception as e:
+            print(f"Error sending video: {e}")
+
     def run_telegram_tasks_in_thread(self, message, processed_frame):
         def task():
             self.send_telegram_message(message)
@@ -182,6 +233,11 @@ class SurveillanceSystem:
     def release_video(self):
         self.out.release()  # Release the VideoWriter object
         self.write_metadata_to_file()  # Write metadata to a file
+        if self.send_recording:
+            self.send_telegram_video(
+                os.path.join(self.video_directory, self.metadata["file_name"]),
+                filename=self.metadata["file_name"],
+            ) # Send the recorded video to Telegram
 
     def start_new_recording(self):
         output_file = f'output_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.webm'  # Output file name
