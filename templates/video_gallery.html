@@ -66,6 +66,8 @@
             <input type="text" id="telegram-token" name="telegram-token">
             <label for="group-id">Telegram Group ID:</label>
             <input type="text" id="group-id" name="group-id">
+            <label for="send-video">Send Video To Telegram:</label>
+            <input type="checkbox" id="send-video" name="send-video">
             <button id="save-settings" class="action-button">Save</button>
         </div>
     </div>
@@ -196,10 +198,12 @@
                 // Retrieve saved data from local storage
                 let telegramToken = localStorage.getItem("telegramToken");
                 let groupId = localStorage.getItem("groupId");
+                let sendVideo = localStorage.getItem("sendVideo");
                 // Prepare data for API call
                 let data = {
                     telegramToken: telegramToken,
-                    groupId: groupId
+                    groupId: groupId,
+                    sendVideo: sendVideo
                 };
                 fetch('/run-main', {
                     method: 'POST',
@@ -244,19 +248,25 @@
             // Load from local storage and set default values
             let savedTelegramToken = localStorage.getItem("telegramToken");
             let savedGroupId = localStorage.getItem("groupId");
+            let sendVideo = localStorage.getItem("sendVideo");
             if (savedTelegramToken) {
                 document.getElementById("telegram-token").value = savedTelegramToken;
             }
             if (savedGroupId) {
                 document.getElementById("group-id").value = savedGroupId;
             }
+            if (sendVideo) {
+                document.getElementById("send-video").checked = sendVideo === 'true';
+            }
             let saveButton = document.getElementById("save-settings");
             saveButton.onclick = function () {
                 let telegramToken = document.getElementById("telegram-token").value;
                 let groupId = document.getElementById("group-id").value;
+                let sendVideo = document.getElementById("send-video").checked;
                 // Save to local storage
                 localStorage.setItem("telegramToken", telegramToken);
                 localStorage.setItem("groupId", groupId);
+                localStorage.setItem("sendVideo", sendVideo);
 
 
                 // Alert the user that the settings have been saved
