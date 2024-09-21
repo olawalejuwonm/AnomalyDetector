@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/app.py"
+   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/app.py"
   },
   {
    "optionDest": "onefile",
@@ -80,6 +80,14 @@
   {
    "optionDest": "datas",
    "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/static/styles.css;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/.venv/Lib/site-packages/ultralytics/cfg/default.yaml;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/.venv/Lib/site-packages/ultralytics/cfg;cfg/"
   }
  ],
  "nonPyinstallerOptions": {

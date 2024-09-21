@@ -1,0 +1,57 @@
+Traceback (most recent call last):
+  File "app.py", line 13, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "main.py", line 5, in <module>
+    from ultralytics import YOLO  # Import the YOLO model from the ultralytics library
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "ultralytics\__init__.py", line 10, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "ultralytics\data\__init__.py", line 3, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "ultralytics\data\base.py", line 17, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "ultralytics\data\utils.py", line 19, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "ultralytics\nn\__init__.py", line 3, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "ultralytics\nn\tasks.py", line 10, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "ultralytics\nn\modules\__init__.py", line 20, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "ultralytics\nn\modules\block.py", line 8, in <module>
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
+  File "ultralytics\utils\__init__.py", line 403, in <module>
+  File "ultralytics\utils\__init__.py", line 373, in yaml_load
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\HP\\AppData\\Local\\Temp\\_MEI147082\\ultralytics\\cfg\\default.yaml'
+[PYI-7712:ERROR] Failed to execute script 'app' due to unhandled exception!
