@@ -7,6 +7,8 @@ static/recorded_videos/*
 __pycache__
 venv
 output
+build
+dist
 
 cdnet/office/input
 cdnet
