@@ -53,5 +53,5 @@ Traceback (most recent call last):
   File "PyInstaller\loader\pyimod02_importers.py", line 378, in exec_module
   File "ultralytics\utils\__init__.py", line 403, in <module>
   File "ultralytics\utils\__init__.py", line 373, in yaml_load
-FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\HP\\AppData\\Local\\Temp\\_MEI147082\\ultralytics\\cfg\\default.yaml'
-[PYI-7712:ERROR] Failed to execute script 'app' due to unhandled exception!
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\HP\\AppData\\Local\\Temp\\_MEI29002\\ultralytics\\cfg\\default.yaml'
+[PYI-2872:ERROR] Failed to execute script 'app' due to unhandled exception!
