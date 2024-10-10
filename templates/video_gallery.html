@@ -230,7 +230,8 @@
                 let data = {
                     telegramToken: telegramToken,
                     groupId: groupId,
-                    sendVideo: sendVideo
+                    sendVideo: sendVideo,
+                    cameraSelection: document.getElementById('camera-selection').value
                 };
                 fetch('/run-main', {
                     method: 'POST',

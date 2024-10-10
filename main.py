@@ -25,6 +25,12 @@ class SurveillanceSystem:
         model="yolov8n.pt",
         camera_port=0,
     ):
+        print("Initializing the Intelligent Surveillance System")
+        print("Initial configuration:")
+        print(f"Environment: {environment}")
+        print(f"Model: {model}")
+        print(f"Camera Port: {camera_port}")
+    
         self.model = YOLO(
             model,  # Load the YOLO model with the specified weights
             # device="cuda" if torch.cuda.is_available() else "cpu",
@@ -409,6 +415,8 @@ class SurveillanceSystem:
         return {"cameras": [{"id": i, "name": f"Camera {i+1}"} for i in cameras[1]]}
 
     def run(self):
+        print("Running the Intelligent Surveillance System")
+
         while True:
             ret, frame = self.camera.read()  # Read a frame from the camera
             if not ret:
