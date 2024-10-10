@@ -16,9 +16,18 @@ load_dotenv()
 
 
 class SurveillanceSystem:
-    def __init__(self, bot_token=None, chat_id=None, environment="development", send_recording=False):
+    def __init__(
+        self,
+        bot_token=None,
+        chat_id=None,
+        environment="development",
+        send_recording=False,
+        model="yolov8n.pt",
+        camera_port=0,
+    ):
         self.model = YOLO(
-            "yolov8n.pt"
+            model,  # Load the YOLO model with the specified weights
+            # device="cuda" if torch.cuda.is_available() else "cpu",
         )  # Load the YOLO model with the specified weights
         self.tracker = sv.ByteTrack()  # Initialize the ByteTrack tracker
         self.box_annotator = (
@@ -35,8 +44,8 @@ class SurveillanceSystem:
         )  # Telegram bot token
         self.chat_id = chat_id or os.getenv("TELEGRAM_CHAT_ID")  # Telegram chat ID
         self.environment = environment or os.getenv("ENVIRONMENT")  # Environment
-        self.send_recording = send_recording # For sending recorded video to telegram
-        self.camera = cv2.VideoCapture(0)  # Open the default camera
+        self.send_recording = send_recording  # For sending recorded video to telegram
+        self.camera = cv2.VideoCapture(camera_port)  # Open the default camera
         self.is_recording = False  # Initialize recording state
         self.start_time = 0  # Initialize start time
         self.record_duration = 20  # Set recording duration to 20 seconds
@@ -214,6 +223,7 @@ class SurveillanceSystem:
 
         executor = concurrent.futures.ThreadPoolExecutor()
         executor.submit(task)
+
     def write_metadata_to_file(self):
         """
         Writes metadata to a file.
@@ -237,7 +247,7 @@ class SurveillanceSystem:
             self.send_telegram_video(
                 os.path.join(self.video_directory, self.metadata["file_name"]),
                 filename=self.metadata["file_name"],
-            ) # Send the recorded video to Telegram
+            )  # Send the recorded video to Telegram
 
     def start_new_recording(self):
         output_file = f'output_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.webm'  # Output file name
@@ -347,6 +357,56 @@ class SurveillanceSystem:
                 self.frame_count += 1  # Increment frame counter
 
         return processed_frame
+
+    # def get_cameras(self):
+    #     cameras = []
+    #     for i in range(10):
+    #         camera = cv2.VideoCapture(i)
+    #         if camera.isOpened():
+    #             cameras.append(i)
+    #             camera.release()
+    #     return cameras
+
+    # get camera connected to the system with their name and status
+    def get_cameras(self):
+        def list_ports():
+            """
+            Test the ports and returns a tuple with the available ports and the ones that are working.
+            """
+            non_working_ports = []
+            dev_port = 0
+            working_ports = []
+            available_ports = []
+            while (
+                len(non_working_ports) < 6
+            ):  # if there are more than 5 non working ports stop the testing.
+                camera = cv2.VideoCapture(dev_port)
+                if not camera.isOpened():
+                    non_working_ports.append(dev_port)
+                    print("Port %s is not working." % dev_port)
+                else:
+                    is_reading, img = camera.read()
+                    w = camera.get(3)
+                    h = camera.get(4)
+                    if is_reading:
+                        print(
+                            "Port %s is working and reads images (%s x %s)"
+                            % (dev_port, h, w)
+                        )
+                        working_ports.append(dev_port)
+                    else:
+                        print(
+                            "Port %s for camera ( %s x %s) is present but does not reads."
+                            % (dev_port, h, w)
+                        )
+                        available_ports.append(dev_port)
+                dev_port += 1
+            return available_ports, working_ports, non_working_ports
+
+        cameras = []
+        cameras = list_ports()
+        # return working ports camera as dict with id and name
+        return {"cameras": [{"id": i, "name": f"Camera {i+1}"} for i in cameras[1]]}
 
     def run(self):
         while True:

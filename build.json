@@ -67,10 +67,6 @@
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/templates;templates/"
-  },
-  {
-   "optionDest": "datas",
    "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/static/recorded_videos/.gitkeep;."
   },
   {
@@ -84,6 +80,10 @@
   {
    "optionDest": "datas",
    "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/.venv/Lib/site-packages/ultralytics/cfg/default.yaml;.\\ultralytics\\cfg"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/templates;templates/"
   }
  ],
  "nonPyinstallerOptions": {

@@ -68,6 +68,11 @@
             <input type="text" id="group-id" name="group-id">
             <label for="send-video">Send Video To Telegram:</label>
             <input type="checkbox" id="send-video" name="send-video">
+            <!-- New Camera Selection Dropdown -->
+            <label for="camera-selection">Select Camera: (Working Camera on the device will show up)</label>
+            <select id="camera-selection" name="camera-selection">
+                <!-- Options will be populated by JavaScript -->
+            </select>
             <button id="save-settings" class="action-button">Save</button>
         </div>
     </div>
@@ -135,7 +140,29 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+
+        // Fetch the list of cameras and populate the dropdown
+        fetch('/get-cameras')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('camera-selection').value = localStorage.getItem('cameraSelection') || 0;
+                const cameras = data.cameras;
+                const cameraSelect = document.getElementById('camera-selection');
+                cameras.forEach(camera => {
+                    const option = document.createElement('option');
+                    option.value = camera.id;
+                    option.textContent = camera.name;
+                    cameraSelect.appendChild(option);
+                });
+                // Set the selected camera from local storage
+                cameraSelect.value = localStorage.getItem('cameraSelection') || 0;
+            })
+            .catch(error => {
+                alert('Error fetching cameras. Please try again later.');
+                console.error('Error fetching cameras:', error);
+            });
         document.addEventListener('DOMContentLoaded', function () {
+
             // Calendar Script
             const currentDate = new Date();
             let currentMonth = currentDate.getMonth();
@@ -192,7 +219,7 @@
                 document.getElementById('total-videos-count').textContent = totalVideosToday;
             }
             fetchVideos();
-            setInterval(fetchVideos, 1000);
+            setInterval(fetchVideos, 10000);
             // Function to run the surveillance system
             function runSurveillanceSystem() {
                 // Retrieve saved data from local storage
