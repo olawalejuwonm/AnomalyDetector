@@ -177,6 +177,14 @@ def start_flask(**server_kwargs):
         app.run(**server_kwargs)
 
 
+# get list of camera connected to the system
+@app.route("/get-cameras", methods=["GET"])
+def get_cameras():
+    system = SurveillanceSystem()
+    cameras = system.get_cameras()
+    return jsonify(cameras)
+
+
 if __name__ == "__main__":  # Check if the script is run directly
     PORT = os.getenv("PORT", 5000)  # Get the port number from the environment variables
     if os.getenv("ENVIRONMENT") != "production":
