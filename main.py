@@ -15,6 +15,9 @@ import concurrent.futures
 load_dotenv()
 
 
+current_frame = None
+
+
 class SurveillanceSystem:
     def __init__(
         self,
@@ -30,7 +33,7 @@ class SurveillanceSystem:
         print(f"Environment: {environment}")
         print(f"Model: {model}")
         print(f"Camera Port: {camera_port}")
-    
+
         self.model = YOLO(
             model,  # Load the YOLO model with the specified weights
             # device="cuda" if torch.cuda.is_available() else "cpu",
@@ -51,7 +54,7 @@ class SurveillanceSystem:
         self.chat_id = chat_id or os.getenv("TELEGRAM_CHAT_ID")  # Telegram chat ID
         self.environment = environment or os.getenv("ENVIRONMENT")  # Environment
         self.send_recording = send_recording  # For sending recorded video to telegram
-        self.camera = cv2.VideoCapture(camera_port)  # Open the default camera
+        self.camera = cv2.VideoCapture(int(camera_port))  # Open the default camera
         self.is_recording = False  # Initialize recording state
         self.start_time = 0  # Initialize start time
         self.record_duration = 20  # Set recording duration to 20 seconds
@@ -364,6 +367,34 @@ class SurveillanceSystem:
 
         return processed_frame
 
+    def generate_frames(self):
+        while True:
+            global current_frame
+            frame = current_frame
+            if frame is None:
+                yield(b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + open("static/no_video.jpg", "rb").read() + b"\r\n")
+            ret, buffer = cv2.imencode(".jpg", frame)
+            if not ret:
+                print("Error encoding frame")
+                yield(b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + open("static/no_video.jpg", "rb").read() + b"\r\n")
+                break
+            frame = buffer.tobytes()
+            yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+
+    # def generate_frames(self):
+    #     while True:
+    #         success, frame = self.camera.read()  # Capture frame-by-frame
+    #         if not success:
+    #             print("Error encoding frame")
+    #             break
+    #         else:
+    #             ret, buffer = cv2.imencode('.jpg', frame)
+    #             if not ret:
+    #                 print("Error encoding frame")
+    #                 break
+    #             frame = buffer.tobytes()
+    #             yield (b'--frame\r\n'
+    #                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
     # def get_cameras(self):
     #     cameras = []
     #     for i in range(10):
@@ -426,6 +457,8 @@ class SurveillanceSystem:
                 break
 
             processed_frame = self.process_frame(frame)  # Process the frame
+            global current_frame
+            current_frame = processed_frame
             cv2.imshow(
                 "Intelligent Surveillance System (Press Q to Quit)", processed_frame
             )  # Display the processed frame

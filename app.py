@@ -3,6 +3,7 @@ from flask import (
     render_template,
     jsonify,
     request,
+    Response,
 )  # Import necessary Flask modules
 import os  # Import os module for interacting with the operating system
 import json  # Import json module for handling JSON data
@@ -110,6 +111,7 @@ def delete_video():
 # Global variable to track if the script is running
 is_running = False
 lock = threading.Lock()  # Lock to ensure thread-safe access to the is_running variable
+the_system = None  # Initialize the system variable to None
 
 
 @app.route("/run-main", methods=["POST"])  # Define route to run main.py
@@ -127,7 +129,7 @@ def run_main():
         data = request.get_json()
         telegram_token = data.get("telegramToken")
         group_id = data.get("groupId")
-        send_video = data.get("sendVideo") # Get the sendVideo flag
+        send_video = data.get("sendVideo")  # Get the sendVideo flag
         cameraSelection = data.get("cameraSelection")
         print(f"cameraSelection: {cameraSelection}")
 
@@ -138,6 +140,8 @@ def run_main():
             send_recording=send_video or False,
             camera_port=cameraSelection or 0,
         )
+
+        the_system = system  # Assign the system to the global variable
 
         # Function to run the surveillance system and capture output
         def run_system():
@@ -188,6 +192,23 @@ def get_cameras():
     system = SurveillanceSystem()
     cameras = system.get_cameras()
     return jsonify(cameras)
+
+
+@app.route("/video_feed")
+def video_feed():
+    global the_system
+    if the_system is None:
+        # return jsonify({"error": "The surveillance system is not running."})
+        # send a dummy image
+        return Response(
+            b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + open("static/no_video.jpg", "rb").read() + b"\r\n",
+            mimetype="multipart/x-mixed-replace; boundary=frame",
+        )
+    else:
+        return Response(
+            the_system.generate_frames(),
+            mimetype="multipart/x-mixed-replace; boundary=frame",
+        )
 
 
 if __name__ == "__main__":  # Check if the script is run directly
