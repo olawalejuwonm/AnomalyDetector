@@ -10,6 +10,7 @@ import json  # Import json module for handling JSON data
 import threading  # Import threading module to handle concurrent execution
 from flaskwebgui import FlaskUI  # Import FlaskUI from flaskwebgui
 from dotenv import load_dotenv  # for enviromental variables
+import asyncio  # Import asyncio module for asynchronous programming
 
 from main import (
     SurveillanceSystem,
@@ -33,12 +34,45 @@ def get_video_files():
         print("Creating video directory")
         os.makedirs(video_directory)  # Create the directory if it doesn't exist
 
+
+
     video_files = [
         f
         for f in os.listdir(video_directory)
         if f.endswith(".webm")
         and os.path.exists(os.path.join(video_directory, f"{f}.json"))
     ]
+
+
+    async def copy_videos_async():
+        app_static_folder_video_directory = os.path.join(
+            app.static_folder, "recorded_videos"
+        )  # Define the path to the video directory in the Flask application static folder
+        if not os.path.exists(app_static_folder_video_directory):
+            print("Creating video directory in Flask static folder")
+            os.makedirs(app_static_folder_video_directory)
+        
+        # if the total number of videos in video_directory is not equal to the total number of videos in app_static_folder_video_directory then copy the videos in video_directory that are not in app_static_folder_video_directory to app_static_folder_video_directory
+        if len(video_files) != len(
+            [
+                f
+                for f in os.listdir(app_static_folder_video_directory)
+                if f.endswith(".webm")
+                and os.path.exists(os.path.join(video_directory, f"{f}.json"))
+            ]
+        ):
+            for f in video_files:
+                if not os.path.exists(
+                    os.path.join(app_static_folder_video_directory, f)
+                ):
+                    await asyncio.to_thread(
+                        os.system,
+                        f"cp {os.path.join(video_directory, f)} {os.path.join(app_static_folder_video_directory, f)}"
+                    )
+
+    # Run the asynchronous copy operation
+    asyncio.run(copy_videos_async())
+
     return video_directory, video_files  # Return the video directory and files
 
 
