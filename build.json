@@ -84,6 +84,18 @@
   {
    "optionDest": "datas",
    "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/templates;templates/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/templates/live_video.html;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/static/no_video.jpg;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/static/styles.css;."
   }
  ],
  "nonPyinstallerOptions": {

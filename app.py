@@ -19,7 +19,7 @@ from main import (
 # Load environment variables from .env file
 load_dotenv()
 
-app = Flask(__name__)  # Create a Flask application instance
+app = Flask(__name__, static_folder='static')  # Create a Flask application instance
 
 # Enable template auto-reloading
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -27,9 +27,8 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 def get_video_files():
     video_directory = os.path.join(
-        app.static_folder, "recorded_videos"
+        "static", "recorded_videos"
     )  # Define the path to the video directory
-    print("Video directory: ", video_directory)
     if not os.path.exists(video_directory):
         print("Creating video directory")
         os.makedirs(video_directory)  # Create the directory if it doesn't exist
@@ -40,7 +39,6 @@ def get_video_files():
         if f.endswith(".webm")
         and os.path.exists(os.path.join(video_directory, f"{f}.json"))
     ]
-    print("Video files: ", video_files)
     return video_directory, video_files  # Return the video directory and files
 
 
@@ -70,9 +68,6 @@ def video_gallery():
     )  # Render the video gallery template with the video metadata
 
 
-
-
-
 @app.route("/check-videos")  # Define route for checking available videos
 def check_videos():
     _, video_files = get_video_files()  # Get the list of video files
@@ -94,10 +89,10 @@ def delete_video():
         )  # Return an error if not provided
 
     video_path = os.path.join(
-        app.static_folder, "recorded_videos", video_file
+        "static", "recorded_videos", video_file
     )  # Define the path to the video file
     metadata_path = os.path.join(
-        app.static_folder, "recorded_videos", f"{video_file}.json"
+        "static", "recorded_videos", f"{video_file}.json"
     )  # Define the path to the metadata file
 
     if os.path.exists(video_path):  # Check if the video file exists
@@ -137,6 +132,7 @@ def run_main():
         group_id = data.get("groupId")
         send_video = data.get("sendVideo")  # Get the sendVideo flag
         cameraSelection = data.get("cameraSelection")
+        model = data.get("model")
         print(f"cameraSelection: {cameraSelection}")
 
         # Create an instance of the SurveillanceSystem class
@@ -145,6 +141,7 @@ def run_main():
             chat_id=group_id,
             send_recording=send_video or False,
             camera_port=cameraSelection or 0,
+            model=model or "yolov8n.pt",
         )
 
         global the_system
@@ -177,12 +174,15 @@ def run_main():
         with lock:
             is_running = False  # Reset the running state
 
+
 @app.route("/live")
 def live_video():
     global the_system
     is_running = the_system is not None
     print("is_running: ", is_running)
     return render_template("live_video.html", is_running=is_running)
+
+
 # Used code from https://pypi.org/project/flaskwebgui/ (Advanced Usage)
 def start_flask(**server_kwargs):
 
