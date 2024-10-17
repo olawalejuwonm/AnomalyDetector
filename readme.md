@@ -89,3 +89,10 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [Supervision](https://github.com/your-repo/supervision) for tracking and annotation tools
 - [Ultralytics](https://ultralytics.com/) for the YOLO models
 - [YOLO](https://github.com/AlexeyAB/darknet) for the object detection framework
+
+
+# Further Works
+- [ ] Add support for multiple cameras
+- [ ] Add support for selectio of multiple models
+- [ ] Stream the live recording to online repository
+- [ ] Build for Mac OS
