@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Feed</title>
+</head>
+
+<body>
+    <h1>Video Stream</h1>
+    {% if is_running %}
+    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+    {% else %}
+    <p>The surveillance system has not been started. The stream won't be possible.</p>
+    Go to the <a href="/"> main page </a> to start the system and refresh this page
+    {% endif %}
+</body>
+
+</html>

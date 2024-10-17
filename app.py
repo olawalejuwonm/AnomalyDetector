@@ -29,7 +29,9 @@ def get_video_files():
     video_directory = os.path.join(
         app.static_folder, "recorded_videos"
     )  # Define the path to the video directory
+    print("Video directory: ", video_directory)
     if not os.path.exists(video_directory):
+        print("Creating video directory")
         os.makedirs(video_directory)  # Create the directory if it doesn't exist
 
     video_files = [
@@ -38,6 +40,7 @@ def get_video_files():
         if f.endswith(".webm")
         and os.path.exists(os.path.join(video_directory, f"{f}.json"))
     ]
+    print("Video files: ", video_files)
     return video_directory, video_files  # Return the video directory and files
 
 
@@ -65,6 +68,9 @@ def video_gallery():
     return render_template(
         "video_gallery.html", videos=video_metadata
     )  # Render the video gallery template with the video metadata
+
+
+
 
 
 @app.route("/check-videos")  # Define route for checking available videos
@@ -141,6 +147,7 @@ def run_main():
             camera_port=cameraSelection or 0,
         )
 
+        global the_system
         the_system = system  # Assign the system to the global variable
 
         # Function to run the surveillance system and capture output
@@ -170,7 +177,12 @@ def run_main():
         with lock:
             is_running = False  # Reset the running state
 
-
+@app.route("/live")
+def live_video():
+    global the_system
+    is_running = the_system is not None
+    print("is_running: ", is_running)
+    return render_template("live_video.html", is_running=is_running)
 # Used code from https://pypi.org/project/flaskwebgui/ (Advanced Usage)
 def start_flask(**server_kwargs):
 
@@ -201,7 +213,9 @@ def video_feed():
         # return jsonify({"error": "The surveillance system is not running."})
         # send a dummy image
         return Response(
-            b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + open("static/no_video.jpg", "rb").read() + b"\r\n",
+            b"--frame\r\nContent-Type: image/jpeg\r\n\r\n"
+            + open("static/no_video.jpg", "rb").read()
+            + b"\r\n",
             mimetype="multipart/x-mixed-replace; boundary=frame",
         )
     else:
