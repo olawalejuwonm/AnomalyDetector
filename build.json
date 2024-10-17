@@ -63,20 +63,12 @@
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/yolov8n.pt;.\\yolov8n.pt"
-  },
-  {
-   "optionDest": "datas",
    "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/static/recorded_videos/.gitkeep;."
   },
   {
-   "optionDest": "datas",
-   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/static/recorded_videos;recorded_videos/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/static/styles.css;.\\static"
-  },
+    "optionDest": "datas",
+    "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/BuildAnomaly/static/styles.css;.\\static"
+   },
   {
    "optionDest": "datas",
    "value": "C:/Users/HP/Documents/GitHub/UoL-Projects/AnomalyDetector/.venv/Lib/site-packages/ultralytics/cfg/default.yaml;.\\ultralytics\\cfg"
